@@ -1,1 +1,403 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ColorHop</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    background: #bdecc0;
+}
+
+.screen {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.active {
+    display: flex;
+}
+
+/* SPLASH SCREEN */
+#splash {
+    background: linear-gradient(#b9edc0, #e8f8d9);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 48px;
+    font-weight: bold;
+    color: #267a45;
+    text-shadow: 2px 3px 5px #ffffff;
+}
+
+.tagline {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #356b45;
+}
+
+/* HOME */
+#home {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at 20% 20%, #ffffff88 0 8%, transparent 9%),
+        linear-gradient(#a9e8ae, #e8f6c9);
+}
+
+.tree {
+    position: absolute;
+    font-size: 65px;
+}
+
+.t1 { left: 5%; bottom: 8%; }
+.t2 { right: 4%; bottom: 12%; }
+.t3 { left: 18%; top: 10%; font-size: 45px; }
+.t4 { right: 20%; top: 15%; font-size: 45px; }
+
+.home-title {
+    font-size: 45px;
+    color: #277745;
+    margin-bottom: 35px;
+}
+
+.menu {
+    width: 75%;
+    max-width: 330px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.menu button {
+    border: none;
+    border-radius: 18px;
+    padding: 16px;
+    font-size: 19px;
+    background: white;
+    color: #286b42;
+    box-shadow: 0 5px 12px #4d805055;
+}
+
+/* GAME */
+#game {
+    display: none;
+    background: linear-gradient(#a9e9b0, #dff4bf);
+}
+
+#game.active {
+    display: block;
+}
+
+.game-title {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    font-weight: bold;
+    color: #236b3b;
+    font-size: 20px;
+    z-index: 5;
+}
+
+.level {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-weight: bold;
+    color: #236b3b;
+    z-index: 5;
+}
+
+.scene {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 20%;
+    height: 48%;
+}
+
+/* broken path */
+.path {
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    top: 50%;
+    height: 28px;
+    background: #b58b5b;
+    border-radius: 20px;
+    transform: rotate(-2deg);
+}
+
+.path:before,
+.path:after {
+    content: "";
+    position: absolute;
+    width: 22%;
+    height: 8px;
+    background: #8b6948;
+    top: 9px;
+}
+
+.path:before {
+    left: 25%;
+}
+
+.path:after {
+    right: 15%;
+}
+
+/* character */
+.character {
+    position: absolute;
+    left: 12%;
+    top: calc(50% - 58px);
+    font-size: 55px;
+    transition: left .25s, top .25s;
+    z-index: 4;
+}
+
+/* balloons */
+.balloon {
+    position: absolute;
+    bottom: -80px;
+    font-size: 45px;
+    animation: fly 5s linear forwards;
+    z-index: 3;
+}
+
+@keyframes fly {
+    from {
+        bottom: -80px;
+    }
+    to {
+        bottom: 90%;
+    }
+}
+
+.target {
+    position: absolute;
+    right: 8%;
+    top: 8%;
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 55px;
+    box-shadow: 0 5px 15px #46734d55;
+}
+
+.controls {
+    position: absolute;
+    bottom: 22px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    z-index: 10;
+}
+
+.controls button {
+    width: 90px;
+    height: 65px;
+    border: none;
+    border-radius: 20px;
+    background: white;
+    font-size: 28px;
+    box-shadow: 0 5px 10px #416f4d66;
+}
+
+.info {
+    position: absolute;
+    bottom: 105px;
+    width: 100%;
+    text-align: center;
+    color: #28643b;
+    font-weight: bold;
+}
+
+.back {
+    position: absolute;
+    top: 45px;
+    left: 15px;
+    border: none;
+    background: white;
+    border-radius: 12px;
+    padding: 8px 13px;
+    color: #28643b;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SPLASH -->
+<section id="splash" class="screen active">
+    <div class="logo">🌿 ColorHop 🎈</div>
+    <div class="tagline">Hop • Catch • Color</div>
+</section>
+
+<!-- HOME -->
+<section id="home" class="screen">
+
+    <div class="tree t1">🌳</div>
+    <div class="tree t2">🌲</div>
+    <div class="tree t3">🌿</div>
+    <div class="tree t4">🌿</div>
+
+    <h1 class="home-title">ColorHop</h1>
+
+    <div class="menu">
+        <button onclick="startGame()">🎮 Play</button>
+        <button onclick="showMessage('Profile coming soon!')">👤 Profile</button>
+        <button onclick="showMessage('Settings coming soon!')">⚙️ Settings</button>
+        <button onclick="showMessage('Catch the correct colors and complete the picture!')">❓ How to Play</button>
+        <button onclick="showMessage('Languages coming soon!')">🌐 Language</button>
+    </div>
+</section>
+
+<!-- GAME -->
+<section id="game" class="screen">
+
+    <div class="game-title">ColorHop 🎈</div>
+    <div class="level">Level <span id="levelNumber">1</span></div>
+
+    <button class="back" onclick="goHome()">← Home</button>
+
+    <div class="scene">
+
+        <div class="target">🪔</div>
+
+        <div class="path"></div>
+
+        <div id="character" class="character">🧑</div>
+
+        <div id="balloons"></div>
+
+    </div>
+
+    <div class="info">
+        Catch: 🟡 Yellow + 🟤 Brown
+    </div>
+
+    <div class="controls">
+        <button onclick="moveLeft()">⬅️</button>
+        <button onclick="jump()">⬆️</button>
+        <button onclick="moveRight()">➡️</button>
+    </div>
+
+</section>
+
+<script>
+
+let currentLevel = 1;
+let characterPosition = 12;
+
+function showScreen(id) {
+    document.querySelectorAll(".screen").forEach(s => {
+        s.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+}
+
+setTimeout(() => {
+    showScreen("home");
+}, 5000);
+
+function startGame() {
+    showScreen("game");
+    createBalloons();
+}
+
+function goHome() {
+    showScreen("home");
+}
+
+function moveLeft() {
+    characterPosition -= 5;
+
+    if (characterPosition < 2) {
+        characterPosition = 2;
+    }
+
+    document.getElementById("character").style.left =
+        characterPosition + "%";
+}
+
+function moveRight() {
+    characterPosition += 5;
+
+    if (characterPosition > 85) {
+        characterPosition = 85;
+    }
+
+    document.getElementById("character").style.left =
+        characterPosition + "%";
+}
+
+function jump() {
+    const character = document.getElementById("character");
+
+    character.style.transform = "translateY(-90px)";
+
+    setTimeout(() => {
+        character.style.transform = "translateY(0)";
+    }, 500);
+}
+
+function createBalloons() {
+
+    const container = document.getElementById("balloons");
+
+    container.innerHTML = "";
+
+    const colors = ["🟡", "🟤", "🔵", "🔴", "🟢"];
+
+    for (let i = 0; i < 7; i++) {
+
+        const balloon = document.createElement("div");
+
+        balloon.className = "balloon";
+
+        balloon.innerText =
+            colors[Math.floor(Math.random() * colors.length)];
+
+        balloon.style.left =
+            (10 + Math.random() * 80) + "%";
+
+        balloon.style.animationDelay =
+            (Math.random() * 3) + "s";
+
+        container.appendChild(balloon);
+    }
+}
+
+function showMessage(text) {
+    alert(text);
+}
+
+</script>
+
+</body>
+                             </html>
