@@ -2,648 +2,1238 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>ColorHop</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{overflow:hidden;font-family:Arial,sans-serif;background:#bfe9b5;color:#28563a}
-button{font-family:inherit}
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
 
-.screen{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}
-.active{display:flex}
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial,sans-serif;
+}
 
-/* ---------- SPLASH ---------- */
+body{
+  background:#b9efc2;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+/* ================= SPLASH ================= */
+
 #splash{
-align-items:center;justify-content:center;flex-direction:column;
-background:linear-gradient(#8edfa5,#dff6bd)
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(#a8e6b0,#e7ffd9);
 }
+
 .logo{
-font-size:48px;font-weight:900;color:#267849;
-text-shadow:0 3px 0 white,0 6px 12px #3b704855
+  font-size:48px;
+  font-weight:900;
+  color:#238b45;
+  text-shadow:0 4px 0 #fff;
 }
-.tagline{margin-top:10px;font-size:18px;color:#47714e}
 
-/* ---------- HOME ---------- */
+.logo span{
+  color:#f2b705;
+}
+
+.tagline{
+  margin-top:10px;
+  color:#39734b;
+  font-size:16px;
+}
+
+/* ================= SCREENS ================= */
+
+.screen{
+  position:fixed;
+  inset:0;
+  display:none;
+}
+
+.screen.active{
+  display:block;
+}
+
+/* ================= HOME ================= */
+
 #home{
-align-items:center;justify-content:center;flex-direction:column;
-background:linear-gradient(#83dca1 0%,#c8efb0 55%,#e9f5c9 100%);
+  background:
+    linear-gradient(#9ee8b0 0%,#d9f9c8 60%,#8bd16d 100%);
+  overflow:hidden;
 }
+
 .sun{
-position:absolute;right:9%;top:7%;width:70px;height:70px;
-border-radius:50%;background:#ffe895;
-box-shadow:0 0 35px #fff0a8
+  position:absolute;
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:#ffe477;
+  top:35px;
+  right:30px;
+  box-shadow:0 0 30px #fff3a1;
 }
+
 .cloud{
-position:absolute;font-size:48px;opacity:.75
+  position:absolute;
+  background:white;
+  width:100px;
+  height:30px;
+  border-radius:30px;
+  opacity:.75;
 }
-.c1{top:12%;left:5%}.c2{top:23%;right:4%}
+
+.cloud:before,
+.cloud:after{
+  content:"";
+  position:absolute;
+  background:white;
+  border-radius:50%;
+}
+
+.cloud:before{
+  width:45px;
+  height:45px;
+  left:15px;
+  top:-20px;
+}
+
+.cloud:after{
+  width:55px;
+  height:55px;
+  right:10px;
+  top:-28px;
+}
+
+.c1{top:90px;left:25px}
+.c2{top:170px;right:80px;transform:scale(.7)}
+
+.homeContent{
+  position:absolute;
+  top:18%;
+  left:7%;
+  right:7%;
+  text-align:center;
+}
+
 .homeTitle{
-font-size:50px;font-weight:900;color:#267748;
-text-shadow:0 3px white,0 7px 12px #46705266;
-z-index:2
+  font-size:43px;
+  color:#237c40;
+  font-weight:900;
+  text-shadow:0 3px white;
 }
-.homeSub{margin:7px 0 30px;color:#47714e;z-index:2}
+
+.homeTitle span{
+  color:#efb900;
+}
+
 .menu{
-width:78%;max-width:340px;display:flex;flex-direction:column;
-gap:12px;z-index:2
+  margin-top:30px;
+  display:grid;
+  gap:13px;
 }
-.menu button,.smallBtn{
-border:0;border-radius:18px;padding:15px;background:#fffffff0;
-font-size:18px;color:#286b43;box-shadow:0 6px 15px #47734d40
-}
-.tree{position:absolute;font-size:70px;bottom:3%}
-.t1{left:2%}.t2{right:2%}.t3{left:24%;font-size:40px}.t4{right:25%;font-size:42px}
 
-/* ---------- GAME ---------- */
+.menu button{
+  padding:16px;
+  border-radius:20px;
+  background:rgba(255,255,255,.88);
+  color:#267640;
+  font-size:18px;
+  box-shadow:0 5px 12px rgba(0,0,0,.15);
+}
+
+.menu button:active{
+  transform:scale(.96);
+}
+
+.tree{
+  position:absolute;
+  bottom:0;
+  font-size:95px;
+}
+
+.t1{left:-8px}
+.t2{right:-10px}
+
+/* ================= INFO ================= */
+
+#info{
+  background:linear-gradient(#b8f0c0,#eaffd9);
+  padding:25px;
+}
+
+.infoBox{
+  background:white;
+  border-radius:25px;
+  padding:25px;
+  max-width:500px;
+  margin:40px auto;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.infoBox h2{
+  color:#258145;
+}
+
+.back{
+  background:#26864a;
+  color:white;
+  padding:12px 25px;
+  border-radius:15px;
+  margin-top:20px;
+}
+
+/* ================= GAME ================= */
+
 #game{
-display:block;
-background:linear-gradient(#79d99d 0%,#bceca9 48%,#e6f3bd 100%);
-}
-.skyCloud{position:absolute;font-size:42px;opacity:.65}
-.sc1{left:5%;top:10%}.sc2{right:8%;top:17%}
-
-.mountain{
-position:absolute;bottom:31%;width:0;height:0;
-border-left:95px solid transparent;border-right:95px solid transparent;
-border-bottom:145px solid #8bc991;opacity:.7
-}
-.m1{left:3%}.m2{right:3%;transform:scale(.8)}
-
-.gameTitle{
-position:absolute;top:12px;left:14px;font-size:20px;font-weight:bold;
-color:#246c42;z-index:20
-}
-.levelBox{
-position:absolute;top:10px;right:12px;background:#ffffffdd;
-padding:9px 13px;border-radius:14px;font-weight:bold;z-index:20
-}
-.homeBtn{
-position:absolute;top:52px;left:13px;border:0;background:#ffffffdd;
-border-radius:12px;padding:8px 12px;color:#286b43;z-index:20
+  background:
+    linear-gradient(#a5e9b3 0%,#d9f8ca 50%,#83ce68 100%);
 }
 
-.scene{
-position:absolute;left:0;right:0;top:20%;height:53%;z-index:5
+.skyCloud{
+  position:absolute;
+  top:35px;
+  width:110px;
+  height:32px;
+  background:#fff;
+  border-radius:30px;
+  opacity:.65;
 }
 
-/* Grass */
+.skyCloud:before,
+.skyCloud:after{
+  content:"";
+  position:absolute;
+  background:#fff;
+  border-radius:50%;
+}
+
+.skyCloud:before{
+  width:45px;
+  height:45px;
+  left:15px;
+  top:-20px;
+}
+
+.skyCloud:after{
+  width:55px;
+  height:55px;
+  right:10px;
+  top:-27px;
+}
+
+.sc1{left:15px}
+.sc2{right:20px;top:105px;transform:scale(.65)}
+
+.mountains{
+  position:absolute;
+  left:0;
+  right:0;
+  top:130px;
+  height:160px;
+  background:
+    linear-gradient(135deg,transparent 50%,#8dc98b 51%) 0 0/180px 160px,
+    linear-gradient(225deg,transparent 50%,#78b97c 51%) 90px 0/180px 160px;
+  opacity:.75;
+}
+
+/* ground */
+
+.ground{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  height:31%;
+  background:linear-gradient(#75c85f,#4fa84f);
+}
+
 .grass{
-position:absolute;bottom:0;left:0;right:0;height:35%;
-background:linear-gradient(#9fdc8d,#cceba4);
-border-radius:50% 50% 0 0
+  position:absolute;
+  bottom:27%;
+  left:0;
+  right:0;
+  height:18px;
+  background:#51aa4b;
 }
 
-/* Broken path */
-.pathPart{
-position:absolute;height:30px;background:#a97b4d;border-radius:16px;
-box-shadow:0 6px 0 #87623f
-}
-.p1{left:3%;width:22%;top:62%;transform:rotate(-3deg)}
-.p2{left:29%;width:18%;top:55%;transform:rotate(5deg)}
-.p3{left:51%;width:20%;top:65%;transform:rotate(-4deg)}
-.p4{left:77%;width:19%;top:51%;transform:rotate(3deg)}
+/* ================= TOP UI ================= */
 
-.pathMark{
-position:absolute;width:8px;height:8px;border-radius:50%;background:#d2a875;
-top:10px;left:25%
-}
-
-/* Character */
-.character{
-position:absolute;left:8%;top:calc(62% - 82px);
-width:58px;height:82px;z-index:12;
-transition:left .22s,top .18s
-}
-.head{
-position:absolute;left:15px;top:0;width:38px;height:38px;
-border-radius:50%;background:#f1bb83;border:3px solid #754d38
-}
-.hair{
-position:absolute;left:16px;top:0;width:36px;height:15px;
-border-radius:20px 20px 5px 5px;background:#573522
-}
-.eye{position:absolute;width:4px;height:6px;background:#35251d;border-radius:50%;top:17px}
-.e1{left:11px}.e2{left:25px}
-.body{
-position:absolute;left:16px;top:35px;width:34px;height:30px;
-border-radius:12px 12px 8px 8px;background:#4f91d5
-}
-.arm{
-position:absolute;top:39px;width:10px;height:30px;
-border-radius:8px;background:#f1bb83;transform-origin:top
-}
-.a1{left:7px;transform:rotate(18deg)}
-.a2{right:5px;transform:rotate(-18deg)}
-.leg{
-position:absolute;top:62px;width:11px;height:25px;
-border-radius:8px;background:#4b3d7d;transform-origin:top
-}
-.l1{left:17px}.l2{left:34px}
-
-/* Target */
-.target{
-position:absolute;right:7%;top:4%;width:92px;height:92px;
-background:#ffffffdd;border-radius:22px;
-display:flex;align-items:center;justify-content:center;
-font-size:53px;box-shadow:0 7px 20px #46734d55;
-z-index:10
-}
-.targetLabel{
-position:absolute;right:6%;top:29%;font-size:12px;
-font-weight:bold;background:#ffffffcc;padding:5px 8px;border-radius:10px
+.gameTop{
+  position:absolute;
+  top:12px;
+  left:10px;
+  right:10px;
+  z-index:30;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
 }
 
-/* Balloons */
-.balloon{
-position:absolute;width:40px;height:48px;border-radius:50% 50% 48% 48%;
-z-index:15;filter:drop-shadow(0 5px 4px #45664455);
-animation:floatUp linear forwards
-}
-.balloon:before{
-content:"";position:absolute;left:8px;top:6px;width:10px;height:14px;
-border-radius:50%;background:#ffffff88;transform:rotate(-25deg)
-}
-.balloon:after{
-content:"";position:absolute;left:19px;bottom:-35px;width:2px;height:35px;
-background:#806c5b
-}
-.balloon .knot{
-position:absolute;bottom:-4px;left:16px;width:9px;height:7px;
-background:inherit;transform:rotate(45deg)
-}
-.yellow{background:#ffd83d}
-.brown{background:#9b673f}
-.red{background:#ef5757}
-.blue{background:#4e9eea}
-.green{background:#55b96b}
-.purple{background:#9b70d6}
-
-@keyframes floatUp{
-from{transform:translateY(0)}
-to{transform:translateY(-110vh)}
+.level{
+  background:rgba(255,255,255,.9);
+  padding:9px 13px;
+  border-radius:15px;
+  color:#247541;
+  font-weight:bold;
 }
 
-/* HUD */
 .catchBox{
-position:absolute;left:50%;transform:translateX(-50%);
-bottom:110px;background:#ffffffdd;padding:9px 14px;border-radius:16px;
-font-weight:bold;z-index:30;white-space:nowrap
+  background:rgba(255,255,255,.94);
+  padding:9px 12px;
+  border-radius:15px;
+  font-size:13px;
+  color:#555;
+  text-align:center;
 }
+
 .progress{
-position:absolute;left:50%;transform:translateX(-50%);
-top:12px;width:120px;height:10px;background:#ffffff99;border-radius:10px;
-overflow:hidden;z-index:25
+  width:90px;
+  height:8px;
+  margin-top:5px;
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
 }
-.progressFill{height:100%;width:0;background:#f3bf35;transition:width .3s}
+
+.progressFill{
+  height:100%;
+  width:0%;
+  background:#f0b900;
+  transition:.3s;
+}
+
+/* ================= PATH ================= */
+
+.path{
+  position:absolute;
+  height:65px;
+  background:#c9945e;
+  border:5px solid #a87548;
+  border-radius:35px;
+  box-shadow:0 8px 0 rgba(87,76,48,.15);
+}
+
+.p1{
+  width:75%;
+  left:-5%;
+  bottom:25%;
+  transform:rotate(3deg);
+}
+
+.p2{
+  width:60%;
+  right:-7%;
+  bottom:35%;
+  transform:rotate(-6deg);
+}
+
+.p3{
+  width:58%;
+  left:0;
+  bottom:46%;
+  transform:rotate(5deg);
+}
+
+.p4{
+  width:50%;
+  right:2%;
+  bottom:56%;
+  transform:rotate(-7deg);
+}
+
+/* gaps / stones */
+
+.stone{
+  position:absolute;
+  width:22px;
+  height:12px;
+  border-radius:50%;
+  background:#8b704f;
+  opacity:.7;
+}
+
+/* ================= CHARACTER ================= */
+
+#player{
+  position:absolute;
+  z-index:20;
+  width:65px;
+  height:105px;
+  left:45%;
+  bottom:27%;
+  transition:left .12s,bottom .18s;
+}
+
+.head{
+  position:absolute;
+  width:48px;
+  height:48px;
+  left:8px;
+  top:0;
+  border-radius:50%;
+  background:#ffd2a1;
+  border:3px solid #a96e43;
+}
+
+.hair{
+  position:absolute;
+  width:52px;
+  height:22px;
+  left:5px;
+  top:-5px;
+  background:#5a3828;
+  border-radius:50% 50% 35% 35%;
+}
+
+.eye{
+  position:absolute;
+  width:6px;
+  height:8px;
+  border-radius:50%;
+  background:#333;
+  top:19px;
+}
+
+.e1{left:19px}
+.e2{right:19px}
+
+.mouth{
+  position:absolute;
+  width:15px;
+  height:8px;
+  border-bottom:3px solid #c25c5c;
+  border-radius:50%;
+  left:16px;
+  top:30px;
+}
+
+.body{
+  position:absolute;
+  width:42px;
+  height:45px;
+  left:11px;
+  top:47px;
+  background:#4a9bdf;
+  border-radius:15px;
+}
+
+.arm{
+  position:absolute;
+  width:11px;
+  height:37px;
+  background:#ffd2a1;
+  border-radius:10px;
+  top:51px;
+}
+
+.a1{left:1px;transform:rotate(25deg)}
+.a2{right:1px;transform:rotate(-25deg)}
+
+.leg{
+  position:absolute;
+  width:13px;
+  height:32px;
+  background:#384d79;
+  border-radius:10px;
+  top:87px;
+}
+
+.l1{left:15px}
+.l2{right:15px}
+
+/* ================= BALLOON ================= */
+
+.balloon{
+  position:absolute;
+  z-index:18;
+  width:42px;
+  height:52px;
+  border-radius:50% 50% 48% 48%;
+  transform:translate(-50%,0);
+  box-shadow:
+    inset -7px -8px 10px rgba(0,0,0,.12),
+    inset 8px 6px 10px rgba(255,255,255,.45);
+}
+
+.balloon:before{
+  content:"";
+  position:absolute;
+  width:7px;
+  height:7px;
+  background:inherit;
+  bottom:-4px;
+  left:18px;
+  transform:rotate(45deg);
+}
+
+.balloon:after{
+  content:"";
+  position:absolute;
+  width:1px;
+  height:90px;
+  background:#666;
+  left:20px;
+  top:50px;
+}
+
+.shine{
+  position:absolute;
+  width:9px;
+  height:15px;
+  border-radius:50%;
+  background:rgba(255,255,255,.7);
+  left:9px;
+  top:9px;
+}
+
+.yellow{background:#ffd51f}
+.brown{background:#8a5a32}
+.red{background:#ef5350}
+.blue{background:#4a9ee8}
+.pink{background:#ed70ad}
+.green{background:#57bd68}
+.purple{background:#9b6bea}
+
+/* ================= TARGET ================= */
+
+.target{
+  position:absolute;
+  z-index:15;
+  top:88px;
+  left:50%;
+  transform:translateX(-50%);
+  width:82px;
+  height:90px;
+  background:rgba(255,255,255,.82);
+  border-radius:22px;
+  text-align:center;
+  padding-top:7px;
+  box-shadow:0 5px 12px rgba(0,0,0,.12);
+}
+
+.targetTitle{
+  font-size:11px;
+  color:#666;
+}
+
+.lamp{
+  position:relative;
+  margin:5px auto;
+  width:60px;
+  height:45px;
+}
+
+.lampTop{
+  position:absolute;
+  left:15px;
+  top:5px;
+  width:30px;
+  height:16px;
+  border-radius:50% 50% 20% 20%;
+  background:#eee;
+}
+
+.lampBottom{
+  position:absolute;
+  left:8px;
+  top:18px;
+  width:44px;
+  height:20px;
+  border-radius:10px 10px 22px 22px;
+  background:#eee;
+}
+
+.flame{
+  position:absolute;
+  width:14px;
+  height:22px;
+  left:23px;
+  top:-13px;
+  background:#eee;
+  border-radius:50% 50% 50% 0;
+  transform:rotate(45deg);
+}
+
+.target.colored .lampTop,
+.target.colored .lampBottom{
+  background:#9a6334;
+}
+
+.target.colored .flame{
+  background:#ffd21f;
+}
+
+/* ================= CONTROLS ================= */
+
+/*
+  बहुत जरूरी:
+  bottom: 90px रखा गया है ताकि Android के
+  Back/Home navigation area से ऊपर रहे।
+*/
 
 .controls{
-position:absolute;left:0;right:0;bottom:17px;
-display:flex;justify-content:center;gap:10px;z-index:40
-}
-.controls button{
-width:72px;height:58px;border:0;border-radius:18px;
-background:#ffffffed;font-size:25px;color:#285f3d;
-box-shadow:0 6px 13px #406b4c55
-}
-.catchButton{
-width:105px!important;background:#ffd85a!important;font-size:18px!important
-}
-
-.score{
-position:absolute;left:14px;bottom:22px;background:#ffffffdd;
-padding:8px 11px;border-radius:12px;z-index:30;font-weight:bold
+  position:absolute;
+  z-index:50;
+  left:0;
+  right:0;
+  bottom:92px;
+  padding:0 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  pointer-events:none;
 }
 
-/* Message */
+.controlGroup{
+  display:flex;
+  gap:10px;
+  pointer-events:auto;
+}
+
+.control{
+  width:62px;
+  height:62px;
+  border-radius:20px;
+  background:rgba(255,255,255,.94);
+  color:#277344;
+  font-size:25px;
+  box-shadow:0 5px 12px rgba(0,0,0,.22);
+}
+
+.control.catch{
+  width:74px;
+  background:#ffd34b;
+  color:#684b00;
+  font-size:17px;
+}
+
+.control:active{
+  transform:scale(.88);
+}
+
+/* ================= MESSAGE ================= */
+
 .message{
-position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-background:#ffffffef;padding:25px;border-radius:22px;
-box-shadow:0 10px 30px #385c4055;text-align:center;
-z-index:100;display:none;min-width:250px
-}
-.message h2{color:#2d7545;margin-bottom:10px}
-.message button{
-margin-top:15px;border:0;border-radius:14px;padding:12px 22px;
-background:#65c57a;color:white;font-size:16px
+  position:absolute;
+  z-index:80;
+  top:48%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(255,255,255,.96);
+  padding:18px 25px;
+  border-radius:20px;
+  color:#277344;
+  font-size:19px;
+  font-weight:bold;
+  text-align:center;
+  display:none;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
 }
 
-/* Settings / How to */
-.infoScreen{
-align-items:center;justify-content:center;flex-direction:column;
-background:linear-gradient(#91dfaa,#e6f4c8);padding:25px;text-align:center
+/* ================= MOBILE ================= */
+
+@media(max-height:650px){
+  .controls{
+    bottom:75px;
+  }
+
+  .control{
+    width:55px;
+    height:55px;
+  }
+
+  .control.catch{
+    width:68px;
+  }
+
+  .target{
+    top:75px;
+  }
 }
-.infoCard{
-max-width:360px;background:#ffffffdd;border-radius:25px;padding:25px;
-box-shadow:0 8px 25px #466d4d44
-}
-.infoCard h2{margin-bottom:15px;color:#286e43}
-.infoCard p{line-height:1.7}
 </style>
 </head>
 
 <body>
 
 <!-- SPLASH -->
-<section id="splash" class="screen active">
-<div class="logo">🌿 ColorHop 🎈</div>
-<div class="tagline">Hop • Catch • Color</div>
+<section id="splash">
+  <div class="logo">Color<span>Hop</span></div>
+  <div class="tagline">Catch colors. Complete the picture.</div>
 </section>
 
 <!-- HOME -->
 <section id="home" class="screen">
-<div class="sun"></div>
-<div class="cloud c1">☁️</div>
-<div class="cloud c2">☁️</div>
-<div class="tree t1">🌳</div>
-<div class="tree t2">🌲</div>
-<div class="tree t3">🌿</div>
-<div class="tree t4">🌿</div>
 
-<div class="homeTitle">ColorHop</div>
-<div class="homeSub">Hop • Catch • Color</div>
+  <div class="sun"></div>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
 
-<div class="menu">
-<button onclick="startGame()">🎮 Play</button>
-<button onclick="showInfo('profile')">👤 Profile</button>
-<button onclick="showInfo('settings')">⚙️ Settings</button>
-<button onclick="showInfo('how')">❓ How to Play</button>
-<button onclick="showInfo('language')">🌐 Language</button>
-</div>
+  <div class="homeContent">
+    <div class="homeTitle">Color<span>Hop</span></div>
+
+    <div class="menu">
+      <button onclick="startGame()">▶ Play</button>
+      <button onclick="showInfo('profile')">👤 Profile</button>
+      <button onclick="showInfo('settings')">⚙ Settings</button>
+      <button onclick="showInfo('how')">❓ How to Play</button>
+      <button onclick="showInfo('language')">🌐 Language</button>
+    </div>
+  </div>
+
+  <div class="tree t1">🌳</div>
+  <div class="tree t2">🌳</div>
 </section>
 
 <!-- INFO -->
-<section id="info" class="screen infoScreen">
-<div class="infoCard">
-<h2 id="infoTitle"></h2>
-<p id="infoText"></p>
-<button class="smallBtn" onclick="goHome()">← Back</button>
-</div>
+<section id="info" class="screen">
+  <div class="infoBox">
+    <h2 id="infoTitle">ColorHop</h2>
+    <p id="infoText"></p>
+    <button class="back" onclick="goHome()">← Back</button>
+  </div>
 </section>
 
 <!-- GAME -->
 <section id="game" class="screen">
 
-<div class="skyCloud sc1">☁️</div>
-<div class="skyCloud sc2">☁️</div>
-<div class="mountain m1"></div>
-<div class="mountain m2"></div>
+  <div class="skyCloud sc1"></div>
+  <div class="skyCloud sc2"></div>
+  <div class="mountains"></div>
 
-<div class="gameTitle">🌿 ColorHop</div>
-<div class="levelBox">Level <span id="levelNumber">1</span> / 20</div>
-<div class="progress"><div id="progressFill" class="progressFill"></div></div>
+  <div class="gameTop">
+    <div class="level">LEVEL <span id="levelNo">1</span></div>
 
-<button class="homeBtn" onclick="goHome()">← Home</button>
+    <div class="catchBox">
+      Catch:
+      <b id="requiredText">🟡 + 🟤</b>
+      <div class="progress">
+        <div class="progressFill" id="progressFill"></div>
+      </div>
+    </div>
+  </div>
 
-<div class="scene">
-<div class="grass"></div>
+  <div class="target" id="target">
+    <div class="targetTitle">Complete</div>
+    <div class="lamp">
+      <div class="flame"></div>
+      <div class="lampTop"></div>
+      <div class="lampBottom"></div>
+    </div>
+  </div>
 
-<div class="pathPart p1"><div class="pathMark"></div></div>
-<div class="pathPart p2"><div class="pathMark"></div></div>
-<div class="pathPart p3"><div class="pathMark"></div></div>
-<div class="pathPart p4"><div class="pathMark"></div></div>
+  <!-- Paths -->
+  <div class="path p1"></div>
+  <div class="path p2"></div>
+  <div class="path p3"></div>
+  <div class="path p4"></div>
 
-<div class="target">🪔</div>
-<div class="targetLabel">Target</div>
+  <div class="ground"></div>
+  <div class="grass"></div>
 
-<div id="character" class="character">
-<div class="head"><div class="eye e1"></div><div class="eye e2"></div></div>
-<div class="hair"></div>
-<div class="body"></div>
-<div class="arm a1"></div>
-<div class="arm a2"></div>
-<div class="leg l1"></div>
-<div class="leg l2"></div>
-</div>
+  <!-- Stones -->
+  <div class="stone" style="left:15%;bottom:29%"></div>
+  <div class="stone" style="left:30%;bottom:27%"></div>
+  <div class="stone" style="right:20%;bottom:32%"></div>
+  <div class="stone" style="right:7%;bottom:28%"></div>
 
-<div id="balloons"></div>
-</div>
+  <!-- PLAYER -->
+  <div id="player">
+    <div class="hair"></div>
+    <div class="head">
+      <div class="eye e1"></div>
+      <div class="eye e2"></div>
+      <div class="mouth"></div>
+    </div>
+    <div class="body"></div>
+    <div class="arm a1"></div>
+    <div class="arm a2"></div>
+    <div class="leg l1"></div>
+    <div class="leg l2"></div>
+  </div>
 
-<div class="catchBox">
-Catch: <span id="needed">🟡 Yellow + 🟤 Brown</span>
-</div>
+  <!-- CONTROLS -->
+  <div class="controls">
 
-<div id="score" class="score">🎨 0 / 2</div>
+    <div class="controlGroup">
+      <button class="control" onclick="moveLeft()">◀</button>
+      <button class="control" onclick="moveRight()">▶</button>
+    </div>
 
-<div class="controls">
-<button onclick="moveLeft()">⬅️</button>
-<button onclick="jump()">⬆️</button>
-<button class="catchButton" onclick="catchBalloon()">🎈 CATCH</button>
-<button onclick="moveRight()">➡️</button>
-</div>
+    <div class="controlGroup">
+      <button class="control" onclick="jump()">⬆</button>
+      <button class="control catch" onclick="catchBalloon()">CATCH</button>
+    </div>
 
-<div id="message" class="message">
-<h2 id="messageTitle">Level Complete!</h2>
-<p id="messageText"></p>
-<button onclick="closeMessage()">Continue</button>
-</div>
+  </div>
+
+  <div class="message" id="message"></div>
 
 </section>
 
 <script>
 
-let currentLevel=1;
-let characterPosition=8;
-let collectedYellow=false;
-let collectedBrown=false;
-let balloons=[];
-let balloonTimer=null;
-let gameRunning=false;
+/* ================= GAME DATA ================= */
 
-/* Screen */
-function showScreen(id){
-document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-document.getElementById(id).classList.add("active");
-}
+let level = 1;
+let playerX = 45;
+let playerBottom = 27;
+let jumping = false;
 
-setTimeout(()=>showScreen("home"),5000);
+let balloons = [];
+let collected = {
+  yellow:false,
+  brown:false
+};
 
-function goHome(){
-stopGame();
-showScreen("home");
-}
+let spawnTimer = null;
+let gameRunning = false;
+
+const colors = [
+  "yellow",
+  "brown",
+  "red",
+  "blue",
+  "pink",
+  "green",
+  "purple"
+];
+
+/* ================= SCREEN ================= */
+
+setTimeout(()=>{
+  document.getElementById("splash").style.display="none";
+  document.getElementById("home").classList.add("active");
+},5000);
 
 function startGame(){
-currentLevel=1;
-showScreen("game");
-resetLevel();
+
+  document.getElementById("home").classList.remove("active");
+  document.getElementById("info").classList.remove("active");
+  document.getElementById("game").classList.add("active");
+
+  level = 1;
+  gameRunning = true;
+
+  setupLevel();
 }
+
+function goHome(){
+
+  gameRunning=false;
+
+  document.getElementById("game").classList.remove("active");
+  document.getElementById("info").classList.remove("active");
+  document.getElementById("home").classList.add("active");
+
+  clearAllBalloons();
+}
+
+/* ================= INFO ================= */
 
 function showInfo(type){
-showScreen("info");
 
-let title="";
-let text="";
+  document.getElementById("home").classList.remove("active");
+  document.getElementById("info").classList.add("active");
 
-if(type==="profile"){
-title="👤 Profile";
-text="Your ColorHop player profile will be added here. Your progress and completed levels will be saved in a future version.";
-}
-if(type==="settings"){
-title="⚙️ Settings";
-text="Sound, music, vibration and other game settings will be added here.";
-}
-if(type==="how"){
-title="❓ How to Play";
-text="Move with the LEFT and RIGHT buttons. Press JUMP to cross the broken path. When the correct balloon is close to your character, press CATCH. Catch the required colours and complete the picture.";
-}
-if(type==="language"){
-title="🌐 Language";
-text="More languages will be added in the next version. The game is being prepared for multiple languages.";
-}
+  const title=document.getElementById("infoTitle");
+  const text=document.getElementById("infoText");
 
-document.getElementById("infoTitle").innerText=title;
-document.getElementById("infoText").innerText=text;
-}
+  if(type==="profile"){
+    title.innerText="👤 Profile";
+    text.innerText="Your ColorHop adventure profile will appear here.";
+  }
 
-/* Level */
-function resetLevel(){
+  if(type==="settings"){
+    title.innerText="⚙ Settings";
+    text.innerText="Sound, vibration and game settings will be added here.";
+  }
 
-stopBalloons();
+  if(type==="how"){
+    title.innerText="❓ How to Play";
+    text.innerText=
+      "Move left and right. Jump when needed. Catch only the required colors. Wrong colors give a penalty. Complete the picture to finish the level.";
+  }
 
-collectedYellow=false;
-collectedBrown=false;
-characterPosition=8;
-
-document.getElementById("character").style.left=characterPosition+"%";
-document.getElementById("levelNumber").innerText=currentLevel;
-document.getElementById("progressFill").style.width="0%";
-document.getElementById("score").innerText="🎨 0 / 2";
-
-gameRunning=true;
-
-/* Level gets faster gradually */
-let speed=Math.max(1600,4200-(currentLevel*120));
-
-createBalloon();
-balloonTimer=setInterval(createBalloon,speed);
+  if(type==="language"){
+    title.innerText="🌐 Language";
+    text.innerText=
+      "Language selection will be added next. Each selected language will work inside the game.";
+  }
 }
 
-function stopBalloons(){
-if(balloonTimer){
-clearInterval(balloonTimer);
-balloonTimer=null;
-}
-document.getElementById("balloons").innerHTML="";
-balloons=[];
+/* ================= LEVEL ================= */
+
+function setupLevel(){
+
+  clearAllBalloons();
+
+  collected.yellow=false;
+  collected.brown=false;
+
+  playerX=45;
+  playerBottom=27;
+  jumping=false;
+
+  document.getElementById("levelNo").innerText=level;
+  document.getElementById("progressFill").style.width="0%";
+  document.getElementById("target").classList.remove("colored");
+
+  /*
+    शुरुआत में Yellow + Brown जरूरी।
+    बाद में भी यही target रहेगा ताकि game समझने में आसान रहे।
+  */
+
+  spawnNextBalloon();
+
+  clearInterval(spawnTimer);
+
+  /*
+    एक-एक balloon.
+    Level बढ़ने पर थोड़ी तेजी।
+  */
+
+  let interval=Math.max(1300,2300-(level*45));
+
+  spawnTimer=setInterval(()=>{
+    if(gameRunning){
+      spawnNextBalloon();
+    }
+  },interval);
 }
 
-function stopGame(){
-gameRunning=false;
-stopBalloons();
+/* ================= BALLOON SPAWN ================= */
+
+function spawnNextBalloon(){
+
+  /*
+    नीचे की जमीन के ऊपर से अलग-अलग X position.
+    अब balloon character के ऊपर से पैदा नहीं होगा।
+  */
+
+  const balloon=document.createElement("div");
+
+  balloon.className="balloon";
+
+  let color;
+
+  /*
+    कुछ balloons required colors,
+    कुछ wrong colors.
+  */
+
+  const random=Math.random();
+
+  if(random<0.38 && !collected.yellow){
+    color="yellow";
+  }
+  else if(random<0.70 && !collected.brown){
+    color="brown";
+  }
+  else{
+    color=colors[Math.floor(Math.random()*colors.length)];
+  }
+
+  balloon.classList.add(color);
+
+  const shine=document.createElement("div");
+  shine.className="shine";
+  balloon.appendChild(shine);
+
+  /*
+    Balloon नीचे से निकलेगा।
+    10% से 90% तक अलग-अलग जगह।
+  */
+
+  let x=10+Math.random()*80;
+
+  balloon.style.left=x+"%";
+  balloon.style.bottom="27%";
+
+  document.getElementById("game").appendChild(balloon);
+
+  balloons.push({
+    el:balloon,
+    x:x,
+    bottom:27,
+    color:color,
+    speed:0.075+(level*0.008)
+  });
 }
 
-/* Character */
+/* ================= BALLOON MOVEMENT ================= */
+
+function moveBalloons(){
+
+  if(!gameRunning) return;
+
+  balloons.forEach((b,index)=>{
+
+    b.bottom += b.speed;
+
+    b.el.style.bottom=b.bottom+"%";
+
+    /*
+      Balloon screen के ऊपर चला जाए तो हटाएँ।
+    */
+
+    if(b.bottom>105){
+
+      b.el.remove();
+      balloons.splice(index,1);
+    }
+
+  });
+
+  requestAnimationFrame(moveBalloons);
+}
+
+moveBalloons();
+
+/* ================= PLAYER ================= */
+
 function moveLeft(){
 
-if(!gameRunning)return;
+  if(!gameRunning) return;
 
-characterPosition-=6;
-if(characterPosition<2)characterPosition=2;
+  playerX-=7;
 
-document.getElementById("character").style.left=characterPosition+"%";
+  if(playerX<5) playerX=5;
+
+  updatePlayer();
 }
 
 function moveRight(){
 
-if(!gameRunning)return;
+  if(!gameRunning) return;
 
-characterPosition+=6;
-if(characterPosition>84)characterPosition=84;
+  playerX+=7;
 
-document.getElementById("character").style.left=characterPosition+"%";
+  if(playerX>90) playerX=90;
+
+  updatePlayer();
 }
+
+function updatePlayer(){
+
+  const player=document.getElementById("player");
+
+  player.style.left=playerX+"%";
+  player.style.bottom=playerBottom+"%";
+}
+
+/* ================= JUMP ================= */
 
 function jump(){
 
-if(!gameRunning)return;
+  if(!gameRunning || jumping) return;
 
-let c=document.getElementById("character");
+  jumping=true;
 
-c.style.top="calc(45% - 82px)";
-c.style.transform="scale(1.05)";
+  playerBottom+=16;
 
-setTimeout(()=>{
-c.style.top="calc(62% - 82px)";
-c.style.transform="scale(1)";
-},550);
+  updatePlayer();
+
+  setTimeout(()=>{
+
+    playerBottom-=16;
+
+    updatePlayer();
+
+    jumping=false;
+
+  },650);
 }
 
-/* Balloons */
-function createBalloon(){
+/* ================= CATCH ================= */
 
-if(!gameRunning)return;
-
-let container=document.getElementById("balloons");
-
-let balloon=document.createElement("div");
-balloon.className="balloon";
-
-let colors=[
-{emoji:"🟡",cls:"yellow",correct:true},
-{emoji:"🟤",cls:"brown",correct:true},
-{emoji:"🔴",cls:"red",correct:false},
-{emoji:"🔵",cls:"blue",correct:false},
-{emoji:"🟢",cls:"green",correct:false},
-{emoji:"🟣",cls:"purple",correct:false}
-];
-
-let chosen=colors[Math.floor(Math.random()*colors.length)];
-
-balloon.classList.add(chosen.cls);
-balloon.dataset.correct=chosen.correct;
-balloon.dataset.color=chosen.cls;
-
-let left=12+Math.random()*76;
-balloon.style.left=left+"%";
-
-let duration=Math.max(5-(currentLevel*.12),2.7);
-balloon.style.animationDuration=duration+"s";
-
-let knot=document.createElement("span");
-knot.className="knot";
-balloon.appendChild(knot);
-
-container.appendChild(balloon);
-
-balloons.push(balloon);
-
-setTimeout(()=>{
-if(balloon.parentNode)balloon.remove();
-balloons=balloons.filter(b=>b!==balloon);
-},duration*1000);
-}
-
-/* Catch */
 function catchBalloon(){
 
-if(!gameRunning)return;
+  if(!gameRunning) return;
 
-let char=document.getElementById("character");
-let charRect=char.getBoundingClientRect();
+  const player=document.getElementById("player");
 
-let closest=null;
-let closestDistance=9999;
+  let best=null;
+  let bestDistance=999;
 
-balloons.forEach(b=>{
+  balloons.forEach((b)=>{
 
-if(!b.parentNode)return;
+    const rect=b.el.getBoundingClientRect();
+    const playerRect=player.getBoundingClientRect();
 
-let r=b.getBoundingClientRect();
+    const bx=rect.left+rect.width/2;
+    const by=rect.top+rect.height/2;
 
-let bx=r.left+r.width/2;
-let by=r.top+r.height/2;
+    const px=playerRect.left+playerRect.width/2;
+    const py=playerRect.top+playerRect.height/2;
 
-let cx=charRect.left+charRect.width/2;
-let cy=charRect.top+charRect.height/2;
+    const distance=Math.sqrt(
+      Math.pow(bx-px,2)+
+      Math.pow(by-py,2)
+    );
 
-let distance=Math.sqrt(
-Math.pow(bx-cx,2)+Math.pow(by-cy,2)
-);
+    if(distance<bestDistance){
 
-if(distance<closestDistance){
-closestDistance=distance;
-closest=b;
-}
-});
+      bestDistance=distance;
+      best=b;
+    }
 
-if(!closest || closestDistance>150){
-showSmallMessage("🎈 Move closer to a balloon!");
-return;
-}
+  });
 
-let correct=closest.dataset.correct==="true";
+  /*
+    Catch range.
+  */
 
-if(correct){
+  if(best && bestDistance<115){
 
-if(closest.dataset.color==="yellow")collectedYellow=true;
-if(closest.dataset.color==="brown")collectedBrown=true;
+    if(best.color==="yellow" || best.color==="brown"){
 
-closest.remove();
+      collectCorrect(best);
 
-updateProgress();
+    }else{
 
-if(collectedYellow && collectedBrown){
-completeLevel();
-}
+      penalty(best);
 
-}else{
+    }
 
-closest.remove();
-penalty();
-}
+  }else{
+
+    showMessage("🎈 Move closer!");
+  }
 }
 
-function updateProgress(){
+/* ================= CORRECT ================= */
 
-let count=0;
-if(collectedYellow)count++;
-if(collectedBrown)count++;
+function collectCorrect(balloon){
 
-document.getElementById("score").innerText="🎨 "+count+" / 2";
-document.getElementById("progressFill").style.width=(count*50)+"%";
+  const color=balloon.color;
+
+  if(collected[color]){
+    balloon.el.remove();
+    balloons=balloons.filter(x=>x!==balloon);
+    return;
+  }
+
+  collected[color]=true;
+
+  balloon.el.remove();
+  balloons=balloons.filter(x=>x!==balloon);
+
+  let count=0;
+
+  if(collected.yellow) count++;
+  if(collected.brown) count++;
+
+  document.getElementById("progressFill").style.width=
+    (count/2*100)+"%";
+
+  /*
+    Yellow + Brown पूरा होने पर target रंगीन।
+  */
+
+  if(count===2){
+
+    document.getElementById("target").classList.add("colored");
+
+    showMessage("✨ Picture Complete!");
+
+    clearInterval(spawnTimer);
+
+    setTimeout(nextLevel,1500);
+  }
+  else{
+
+    showMessage("✅ Correct Color!");
+  }
 }
 
-function penalty(){
+/* ================= PENALTY ================= */
 
-let score=document.getElementById("score");
+function penalty(balloon){
 
-score.innerText="❌ Wrong colour!";
+  balloon.el.remove();
+  balloons=balloons.filter(x=>x!==balloon);
 
-setTimeout(()=>{
-updateProgress();
-},800);
+  showMessage("❌ Wrong Color!");
+
+  /*
+    थोड़ा समय बाद message अपने आप हटेगा।
+  */
 }
 
-/* Level complete */
-function completeLevel(){
+/* ================= MESSAGE ================= */
 
-gameRunning=false;
-stopBalloons();
+let messageTimer=null;
 
-if(currentLevel<20){
+function showMessage(text){
 
-document.getElementById("messageTitle").innerText="🎉 Level Complete!";
-document.getElementById("messageText").innerText=
-"Great! The diya received both correct colours.";
+  const msg=document.getElementById("message");
 
-document.getElementById("message").style.display="block";
+  msg.innerText=text;
+  msg.style.display="block";
 
-}else{
+  clearTimeout(messageTimer);
 
-document.getElementById("messageTitle").innerText="🏆 20 Levels Complete!";
-document.getElementById("messageText").innerText=
-"Excellent! More ColorHop levels will be added in future updates.";
-
-document.getElementById("message").style.display="block";
-}
+  messageTimer=setTimeout(()=>{
+    msg.style.display="none";
+  },850);
 }
 
-function closeMessage(){
+/* ================= NEXT LEVEL ================= */
 
-document.getElementById("message").style.display="none";
+function nextLevel(){
 
-if(currentLevel<20){
-currentLevel++;
-resetLevel();
-}else{
-goHome();
+  if(!gameRunning) return;
+
+  level++;
+
+  if(level>20){
+
+    showMessage("🏆 20 Levels Complete!");
+
+    setTimeout(()=>{
+
+      level=1;
+      setupLevel();
+
+    },2200);
+
+    return;
+  }
+
+  setupLevel();
 }
-}
 
-function showSmallMessage(text){
+/* ================= CLEAR ================= */
 
-let msg=document.getElementById("message");
+function clearAllBalloons(){
 
-document.getElementById("messageTitle").innerText="🎈";
-document.getElementById("messageText").innerText=text;
-msg.querySelector("button").style.display="none";
-msg.style.display="block";
+  balloons.forEach(b=>{
+    if(b.el) b.el.remove();
+  });
 
-setTimeout(()=>{
-msg.style.display="none";
-msg.querySelector("button").style.display="block";
-},1000);
+  balloons=[];
 }
 
 </script>
