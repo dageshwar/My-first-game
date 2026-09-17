@@ -1,251 +1,244 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
 <title>ColorHop</title>
 
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*{box-sizing:border-box;margin:0;padding:0}
+body{overflow:hidden;font-family:Arial,sans-serif;background:#bfe9b5;color:#28563a}
+button{font-family:inherit}
+
+.screen{width:100vw;height:100vh;display:none;position:relative;overflow:hidden}
+.active{display:flex}
+
+/* ---------- SPLASH ---------- */
+#splash{
+align-items:center;justify-content:center;flex-direction:column;
+background:linear-gradient(#8edfa5,#dff6bd)
+}
+.logo{
+font-size:48px;font-weight:900;color:#267849;
+text-shadow:0 3px 0 white,0 6px 12px #3b704855
+}
+.tagline{margin-top:10px;font-size:18px;color:#47714e}
+
+/* ---------- HOME ---------- */
+#home{
+align-items:center;justify-content:center;flex-direction:column;
+background:linear-gradient(#83dca1 0%,#c8efb0 55%,#e9f5c9 100%);
+}
+.sun{
+position:absolute;right:9%;top:7%;width:70px;height:70px;
+border-radius:50%;background:#ffe895;
+box-shadow:0 0 35px #fff0a8
+}
+.cloud{
+position:absolute;font-size:48px;opacity:.75
+}
+.c1{top:12%;left:5%}.c2{top:23%;right:4%}
+.homeTitle{
+font-size:50px;font-weight:900;color:#267748;
+text-shadow:0 3px white,0 7px 12px #46705266;
+z-index:2
+}
+.homeSub{margin:7px 0 30px;color:#47714e;z-index:2}
+.menu{
+width:78%;max-width:340px;display:flex;flex-direction:column;
+gap:12px;z-index:2
+}
+.menu button,.smallBtn{
+border:0;border-radius:18px;padding:15px;background:#fffffff0;
+font-size:18px;color:#286b43;box-shadow:0 6px 15px #47734d40
+}
+.tree{position:absolute;font-size:70px;bottom:3%}
+.t1{left:2%}.t2{right:2%}.t3{left:24%;font-size:40px}.t4{right:25%;font-size:42px}
+
+/* ---------- GAME ---------- */
+#game{
+display:block;
+background:linear-gradient(#79d99d 0%,#bceca9 48%,#e6f3bd 100%);
+}
+.skyCloud{position:absolute;font-size:42px;opacity:.65}
+.sc1{left:5%;top:10%}.sc2{right:8%;top:17%}
+
+.mountain{
+position:absolute;bottom:31%;width:0;height:0;
+border-left:95px solid transparent;border-right:95px solid transparent;
+border-bottom:145px solid #8bc991;opacity:.7
+}
+.m1{left:3%}.m2{right:3%;transform:scale(.8)}
+
+.gameTitle{
+position:absolute;top:12px;left:14px;font-size:20px;font-weight:bold;
+color:#246c42;z-index:20
+}
+.levelBox{
+position:absolute;top:10px;right:12px;background:#ffffffdd;
+padding:9px 13px;border-radius:14px;font-weight:bold;z-index:20
+}
+.homeBtn{
+position:absolute;top:52px;left:13px;border:0;background:#ffffffdd;
+border-radius:12px;padding:8px 12px;color:#286b43;z-index:20
 }
 
-body {
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    background: #bdecc0;
+.scene{
+position:absolute;left:0;right:0;top:20%;height:53%;z-index:5
 }
 
-.screen {
-    width: 100vw;
-    height: 100vh;
-    display: none;
-    position: relative;
-    overflow: hidden;
+/* Grass */
+.grass{
+position:absolute;bottom:0;left:0;right:0;height:35%;
+background:linear-gradient(#9fdc8d,#cceba4);
+border-radius:50% 50% 0 0
 }
 
-.active {
-    display: flex;
+/* Broken path */
+.pathPart{
+position:absolute;height:30px;background:#a97b4d;border-radius:16px;
+box-shadow:0 6px 0 #87623f
+}
+.p1{left:3%;width:22%;top:62%;transform:rotate(-3deg)}
+.p2{left:29%;width:18%;top:55%;transform:rotate(5deg)}
+.p3{left:51%;width:20%;top:65%;transform:rotate(-4deg)}
+.p4{left:77%;width:19%;top:51%;transform:rotate(3deg)}
+
+.pathMark{
+position:absolute;width:8px;height:8px;border-radius:50%;background:#d2a875;
+top:10px;left:25%
 }
 
-/* SPLASH SCREEN */
-#splash {
-    background: linear-gradient(#b9edc0, #e8f8d9);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+/* Character */
+.character{
+position:absolute;left:8%;top:calc(62% - 82px);
+width:58px;height:82px;z-index:12;
+transition:left .22s,top .18s
+}
+.head{
+position:absolute;left:15px;top:0;width:38px;height:38px;
+border-radius:50%;background:#f1bb83;border:3px solid #754d38
+}
+.hair{
+position:absolute;left:16px;top:0;width:36px;height:15px;
+border-radius:20px 20px 5px 5px;background:#573522
+}
+.eye{position:absolute;width:4px;height:6px;background:#35251d;border-radius:50%;top:17px}
+.e1{left:11px}.e2{left:25px}
+.body{
+position:absolute;left:16px;top:35px;width:34px;height:30px;
+border-radius:12px 12px 8px 8px;background:#4f91d5
+}
+.arm{
+position:absolute;top:39px;width:10px;height:30px;
+border-radius:8px;background:#f1bb83;transform-origin:top
+}
+.a1{left:7px;transform:rotate(18deg)}
+.a2{right:5px;transform:rotate(-18deg)}
+.leg{
+position:absolute;top:62px;width:11px;height:25px;
+border-radius:8px;background:#4b3d7d;transform-origin:top
+}
+.l1{left:17px}.l2{left:34px}
+
+/* Target */
+.target{
+position:absolute;right:7%;top:4%;width:92px;height:92px;
+background:#ffffffdd;border-radius:22px;
+display:flex;align-items:center;justify-content:center;
+font-size:53px;box-shadow:0 7px 20px #46734d55;
+z-index:10
+}
+.targetLabel{
+position:absolute;right:6%;top:29%;font-size:12px;
+font-weight:bold;background:#ffffffcc;padding:5px 8px;border-radius:10px
 }
 
-.logo {
-    font-size: 48px;
-    font-weight: bold;
-    color: #267a45;
-    text-shadow: 2px 3px 5px #ffffff;
+/* Balloons */
+.balloon{
+position:absolute;width:40px;height:48px;border-radius:50% 50% 48% 48%;
+z-index:15;filter:drop-shadow(0 5px 4px #45664455);
+animation:floatUp linear forwards
+}
+.balloon:before{
+content:"";position:absolute;left:8px;top:6px;width:10px;height:14px;
+border-radius:50%;background:#ffffff88;transform:rotate(-25deg)
+}
+.balloon:after{
+content:"";position:absolute;left:19px;bottom:-35px;width:2px;height:35px;
+background:#806c5b
+}
+.balloon .knot{
+position:absolute;bottom:-4px;left:16px;width:9px;height:7px;
+background:inherit;transform:rotate(45deg)
+}
+.yellow{background:#ffd83d}
+.brown{background:#9b673f}
+.red{background:#ef5757}
+.blue{background:#4e9eea}
+.green{background:#55b96b}
+.purple{background:#9b70d6}
+
+@keyframes floatUp{
+from{transform:translateY(0)}
+to{transform:translateY(-110vh)}
 }
 
-.tagline {
-    margin-top: 10px;
-    font-size: 18px;
-    color: #356b45;
+/* HUD */
+.catchBox{
+position:absolute;left:50%;transform:translateX(-50%);
+bottom:110px;background:#ffffffdd;padding:9px 14px;border-radius:16px;
+font-weight:bold;z-index:30;white-space:nowrap
+}
+.progress{
+position:absolute;left:50%;transform:translateX(-50%);
+top:12px;width:120px;height:10px;background:#ffffff99;border-radius:10px;
+overflow:hidden;z-index:25
+}
+.progressFill{height:100%;width:0;background:#f3bf35;transition:width .3s}
+
+.controls{
+position:absolute;left:0;right:0;bottom:17px;
+display:flex;justify-content:center;gap:10px;z-index:40
+}
+.controls button{
+width:72px;height:58px;border:0;border-radius:18px;
+background:#ffffffed;font-size:25px;color:#285f3d;
+box-shadow:0 6px 13px #406b4c55
+}
+.catchButton{
+width:105px!important;background:#ffd85a!important;font-size:18px!important
 }
 
-/* HOME */
-#home {
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background:
-        radial-gradient(circle at 20% 20%, #ffffff88 0 8%, transparent 9%),
-        linear-gradient(#a9e8ae, #e8f6c9);
+.score{
+position:absolute;left:14px;bottom:22px;background:#ffffffdd;
+padding:8px 11px;border-radius:12px;z-index:30;font-weight:bold
 }
 
-.tree {
-    position: absolute;
-    font-size: 65px;
+/* Message */
+.message{
+position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+background:#ffffffef;padding:25px;border-radius:22px;
+box-shadow:0 10px 30px #385c4055;text-align:center;
+z-index:100;display:none;min-width:250px
+}
+.message h2{color:#2d7545;margin-bottom:10px}
+.message button{
+margin-top:15px;border:0;border-radius:14px;padding:12px 22px;
+background:#65c57a;color:white;font-size:16px
 }
 
-.t1 { left: 5%; bottom: 8%; }
-.t2 { right: 4%; bottom: 12%; }
-.t3 { left: 18%; top: 10%; font-size: 45px; }
-.t4 { right: 20%; top: 15%; font-size: 45px; }
-
-.home-title {
-    font-size: 45px;
-    color: #277745;
-    margin-bottom: 35px;
+/* Settings / How to */
+.infoScreen{
+align-items:center;justify-content:center;flex-direction:column;
+background:linear-gradient(#91dfaa,#e6f4c8);padding:25px;text-align:center
 }
-
-.menu {
-    width: 75%;
-    max-width: 330px;
-    display: flex;
-    flex-direction: column;
-    gap: 13px;
+.infoCard{
+max-width:360px;background:#ffffffdd;border-radius:25px;padding:25px;
+box-shadow:0 8px 25px #466d4d44
 }
-
-.menu button {
-    border: none;
-    border-radius: 18px;
-    padding: 16px;
-    font-size: 19px;
-    background: white;
-    color: #286b42;
-    box-shadow: 0 5px 12px #4d805055;
-}
-
-/* GAME */
-#game {
-    display: none;
-    background: linear-gradient(#a9e9b0, #dff4bf);
-}
-
-#game.active {
-    display: block;
-}
-
-.game-title {
-    position: absolute;
-    top: 12px;
-    left: 15px;
-    font-weight: bold;
-    color: #236b3b;
-    font-size: 20px;
-    z-index: 5;
-}
-
-.level {
-    position: absolute;
-    top: 12px;
-    right: 15px;
-    font-weight: bold;
-    color: #236b3b;
-    z-index: 5;
-}
-
-.scene {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 20%;
-    height: 48%;
-}
-
-/* broken path */
-.path {
-    position: absolute;
-    left: 5%;
-    right: 5%;
-    top: 50%;
-    height: 28px;
-    background: #b58b5b;
-    border-radius: 20px;
-    transform: rotate(-2deg);
-}
-
-.path:before,
-.path:after {
-    content: "";
-    position: absolute;
-    width: 22%;
-    height: 8px;
-    background: #8b6948;
-    top: 9px;
-}
-
-.path:before {
-    left: 25%;
-}
-
-.path:after {
-    right: 15%;
-}
-
-/* character */
-.character {
-    position: absolute;
-    left: 12%;
-    top: calc(50% - 58px);
-    font-size: 55px;
-    transition: left .25s, top .25s;
-    z-index: 4;
-}
-
-/* balloons */
-.balloon {
-    position: absolute;
-    bottom: -80px;
-    font-size: 45px;
-    animation: fly 5s linear forwards;
-    z-index: 3;
-}
-
-@keyframes fly {
-    from {
-        bottom: -80px;
-    }
-    to {
-        bottom: 90%;
-    }
-}
-
-.target {
-    position: absolute;
-    right: 8%;
-    top: 8%;
-    width: 90px;
-    height: 90px;
-    border-radius: 20px;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 55px;
-    box-shadow: 0 5px 15px #46734d55;
-}
-
-.controls {
-    position: absolute;
-    bottom: 22px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 18px;
-    z-index: 10;
-}
-
-.controls button {
-    width: 90px;
-    height: 65px;
-    border: none;
-    border-radius: 20px;
-    background: white;
-    font-size: 28px;
-    box-shadow: 0 5px 10px #416f4d66;
-}
-
-.info {
-    position: absolute;
-    bottom: 105px;
-    width: 100%;
-    text-align: center;
-    color: #28643b;
-    font-weight: bold;
-}
-
-.back {
-    position: absolute;
-    top: 45px;
-    left: 15px;
-    border: none;
-    background: white;
-    border-radius: 12px;
-    padding: 8px 13px;
-    color: #28643b;
-}
+.infoCard h2{margin-bottom:15px;color:#286e43}
+.infoCard p{line-height:1.7}
 </style>
 </head>
 
@@ -253,151 +246,407 @@ body {
 
 <!-- SPLASH -->
 <section id="splash" class="screen active">
-    <div class="logo">🌿 ColorHop 🎈</div>
-    <div class="tagline">Hop • Catch • Color</div>
+<div class="logo">🌿 ColorHop 🎈</div>
+<div class="tagline">Hop • Catch • Color</div>
 </section>
 
 <!-- HOME -->
 <section id="home" class="screen">
+<div class="sun"></div>
+<div class="cloud c1">☁️</div>
+<div class="cloud c2">☁️</div>
+<div class="tree t1">🌳</div>
+<div class="tree t2">🌲</div>
+<div class="tree t3">🌿</div>
+<div class="tree t4">🌿</div>
 
-    <div class="tree t1">🌳</div>
-    <div class="tree t2">🌲</div>
-    <div class="tree t3">🌿</div>
-    <div class="tree t4">🌿</div>
+<div class="homeTitle">ColorHop</div>
+<div class="homeSub">Hop • Catch • Color</div>
 
-    <h1 class="home-title">ColorHop</h1>
+<div class="menu">
+<button onclick="startGame()">🎮 Play</button>
+<button onclick="showInfo('profile')">👤 Profile</button>
+<button onclick="showInfo('settings')">⚙️ Settings</button>
+<button onclick="showInfo('how')">❓ How to Play</button>
+<button onclick="showInfo('language')">🌐 Language</button>
+</div>
+</section>
 
-    <div class="menu">
-        <button onclick="startGame()">🎮 Play</button>
-        <button onclick="showMessage('Profile coming soon!')">👤 Profile</button>
-        <button onclick="showMessage('Settings coming soon!')">⚙️ Settings</button>
-        <button onclick="showMessage('Catch the correct colors and complete the picture!')">❓ How to Play</button>
-        <button onclick="showMessage('Languages coming soon!')">🌐 Language</button>
-    </div>
+<!-- INFO -->
+<section id="info" class="screen infoScreen">
+<div class="infoCard">
+<h2 id="infoTitle"></h2>
+<p id="infoText"></p>
+<button class="smallBtn" onclick="goHome()">← Back</button>
+</div>
 </section>
 
 <!-- GAME -->
 <section id="game" class="screen">
 
-    <div class="game-title">ColorHop 🎈</div>
-    <div class="level">Level <span id="levelNumber">1</span></div>
+<div class="skyCloud sc1">☁️</div>
+<div class="skyCloud sc2">☁️</div>
+<div class="mountain m1"></div>
+<div class="mountain m2"></div>
 
-    <button class="back" onclick="goHome()">← Home</button>
+<div class="gameTitle">🌿 ColorHop</div>
+<div class="levelBox">Level <span id="levelNumber">1</span> / 20</div>
+<div class="progress"><div id="progressFill" class="progressFill"></div></div>
 
-    <div class="scene">
+<button class="homeBtn" onclick="goHome()">← Home</button>
 
-        <div class="target">🪔</div>
+<div class="scene">
+<div class="grass"></div>
 
-        <div class="path"></div>
+<div class="pathPart p1"><div class="pathMark"></div></div>
+<div class="pathPart p2"><div class="pathMark"></div></div>
+<div class="pathPart p3"><div class="pathMark"></div></div>
+<div class="pathPart p4"><div class="pathMark"></div></div>
 
-        <div id="character" class="character">🧑</div>
+<div class="target">🪔</div>
+<div class="targetLabel">Target</div>
 
-        <div id="balloons"></div>
+<div id="character" class="character">
+<div class="head"><div class="eye e1"></div><div class="eye e2"></div></div>
+<div class="hair"></div>
+<div class="body"></div>
+<div class="arm a1"></div>
+<div class="arm a2"></div>
+<div class="leg l1"></div>
+<div class="leg l2"></div>
+</div>
 
-    </div>
+<div id="balloons"></div>
+</div>
 
-    <div class="info">
-        Catch: 🟡 Yellow + 🟤 Brown
-    </div>
+<div class="catchBox">
+Catch: <span id="needed">🟡 Yellow + 🟤 Brown</span>
+</div>
 
-    <div class="controls">
-        <button onclick="moveLeft()">⬅️</button>
-        <button onclick="jump()">⬆️</button>
-        <button onclick="moveRight()">➡️</button>
-    </div>
+<div id="score" class="score">🎨 0 / 2</div>
+
+<div class="controls">
+<button onclick="moveLeft()">⬅️</button>
+<button onclick="jump()">⬆️</button>
+<button class="catchButton" onclick="catchBalloon()">🎈 CATCH</button>
+<button onclick="moveRight()">➡️</button>
+</div>
+
+<div id="message" class="message">
+<h2 id="messageTitle">Level Complete!</h2>
+<p id="messageText"></p>
+<button onclick="closeMessage()">Continue</button>
+</div>
 
 </section>
 
 <script>
 
-let currentLevel = 1;
-let characterPosition = 12;
+let currentLevel=1;
+let characterPosition=8;
+let collectedYellow=false;
+let collectedBrown=false;
+let balloons=[];
+let balloonTimer=null;
+let gameRunning=false;
 
-function showScreen(id) {
-    document.querySelectorAll(".screen").forEach(s => {
-        s.classList.remove("active");
-    });
-
-    document.getElementById(id).classList.add("active");
+/* Screen */
+function showScreen(id){
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
 }
 
-setTimeout(() => {
-    showScreen("home");
-}, 5000);
+setTimeout(()=>showScreen("home"),5000);
 
-function startGame() {
-    showScreen("game");
-    createBalloons();
+function goHome(){
+stopGame();
+showScreen("home");
 }
 
-function goHome() {
-    showScreen("home");
+function startGame(){
+currentLevel=1;
+showScreen("game");
+resetLevel();
 }
 
-function moveLeft() {
-    characterPosition -= 5;
+function showInfo(type){
+showScreen("info");
 
-    if (characterPosition < 2) {
-        characterPosition = 2;
-    }
+let title="";
+let text="";
 
-    document.getElementById("character").style.left =
-        characterPosition + "%";
+if(type==="profile"){
+title="👤 Profile";
+text="Your ColorHop player profile will be added here. Your progress and completed levels will be saved in a future version.";
+}
+if(type==="settings"){
+title="⚙️ Settings";
+text="Sound, music, vibration and other game settings will be added here.";
+}
+if(type==="how"){
+title="❓ How to Play";
+text="Move with the LEFT and RIGHT buttons. Press JUMP to cross the broken path. When the correct balloon is close to your character, press CATCH. Catch the required colours and complete the picture.";
+}
+if(type==="language"){
+title="🌐 Language";
+text="More languages will be added in the next version. The game is being prepared for multiple languages.";
 }
 
-function moveRight() {
-    characterPosition += 5;
-
-    if (characterPosition > 85) {
-        characterPosition = 85;
-    }
-
-    document.getElementById("character").style.left =
-        characterPosition + "%";
+document.getElementById("infoTitle").innerText=title;
+document.getElementById("infoText").innerText=text;
 }
 
-function jump() {
-    const character = document.getElementById("character");
+/* Level */
+function resetLevel(){
 
-    character.style.transform = "translateY(-90px)";
+stopBalloons();
 
-    setTimeout(() => {
-        character.style.transform = "translateY(0)";
-    }, 500);
+collectedYellow=false;
+collectedBrown=false;
+characterPosition=8;
+
+document.getElementById("character").style.left=characterPosition+"%";
+document.getElementById("levelNumber").innerText=currentLevel;
+document.getElementById("progressFill").style.width="0%";
+document.getElementById("score").innerText="🎨 0 / 2";
+
+gameRunning=true;
+
+/* Level gets faster gradually */
+let speed=Math.max(1600,4200-(currentLevel*120));
+
+createBalloon();
+balloonTimer=setInterval(createBalloon,speed);
 }
 
-function createBalloons() {
-
-    const container = document.getElementById("balloons");
-
-    container.innerHTML = "";
-
-    const colors = ["🟡", "🟤", "🔵", "🔴", "🟢"];
-
-    for (let i = 0; i < 7; i++) {
-
-        const balloon = document.createElement("div");
-
-        balloon.className = "balloon";
-
-        balloon.innerText =
-            colors[Math.floor(Math.random() * colors.length)];
-
-        balloon.style.left =
-            (10 + Math.random() * 80) + "%";
-
-        balloon.style.animationDelay =
-            (Math.random() * 3) + "s";
-
-        container.appendChild(balloon);
-    }
+function stopBalloons(){
+if(balloonTimer){
+clearInterval(balloonTimer);
+balloonTimer=null;
+}
+document.getElementById("balloons").innerHTML="";
+balloons=[];
 }
 
-function showMessage(text) {
-    alert(text);
+function stopGame(){
+gameRunning=false;
+stopBalloons();
+}
+
+/* Character */
+function moveLeft(){
+
+if(!gameRunning)return;
+
+characterPosition-=6;
+if(characterPosition<2)characterPosition=2;
+
+document.getElementById("character").style.left=characterPosition+"%";
+}
+
+function moveRight(){
+
+if(!gameRunning)return;
+
+characterPosition+=6;
+if(characterPosition>84)characterPosition=84;
+
+document.getElementById("character").style.left=characterPosition+"%";
+}
+
+function jump(){
+
+if(!gameRunning)return;
+
+let c=document.getElementById("character");
+
+c.style.top="calc(45% - 82px)";
+c.style.transform="scale(1.05)";
+
+setTimeout(()=>{
+c.style.top="calc(62% - 82px)";
+c.style.transform="scale(1)";
+},550);
+}
+
+/* Balloons */
+function createBalloon(){
+
+if(!gameRunning)return;
+
+let container=document.getElementById("balloons");
+
+let balloon=document.createElement("div");
+balloon.className="balloon";
+
+let colors=[
+{emoji:"🟡",cls:"yellow",correct:true},
+{emoji:"🟤",cls:"brown",correct:true},
+{emoji:"🔴",cls:"red",correct:false},
+{emoji:"🔵",cls:"blue",correct:false},
+{emoji:"🟢",cls:"green",correct:false},
+{emoji:"🟣",cls:"purple",correct:false}
+];
+
+let chosen=colors[Math.floor(Math.random()*colors.length)];
+
+balloon.classList.add(chosen.cls);
+balloon.dataset.correct=chosen.correct;
+balloon.dataset.color=chosen.cls;
+
+let left=12+Math.random()*76;
+balloon.style.left=left+"%";
+
+let duration=Math.max(5-(currentLevel*.12),2.7);
+balloon.style.animationDuration=duration+"s";
+
+let knot=document.createElement("span");
+knot.className="knot";
+balloon.appendChild(knot);
+
+container.appendChild(balloon);
+
+balloons.push(balloon);
+
+setTimeout(()=>{
+if(balloon.parentNode)balloon.remove();
+balloons=balloons.filter(b=>b!==balloon);
+},duration*1000);
+}
+
+/* Catch */
+function catchBalloon(){
+
+if(!gameRunning)return;
+
+let char=document.getElementById("character");
+let charRect=char.getBoundingClientRect();
+
+let closest=null;
+let closestDistance=9999;
+
+balloons.forEach(b=>{
+
+if(!b.parentNode)return;
+
+let r=b.getBoundingClientRect();
+
+let bx=r.left+r.width/2;
+let by=r.top+r.height/2;
+
+let cx=charRect.left+charRect.width/2;
+let cy=charRect.top+charRect.height/2;
+
+let distance=Math.sqrt(
+Math.pow(bx-cx,2)+Math.pow(by-cy,2)
+);
+
+if(distance<closestDistance){
+closestDistance=distance;
+closest=b;
+}
+});
+
+if(!closest || closestDistance>150){
+showSmallMessage("🎈 Move closer to a balloon!");
+return;
+}
+
+let correct=closest.dataset.correct==="true";
+
+if(correct){
+
+if(closest.dataset.color==="yellow")collectedYellow=true;
+if(closest.dataset.color==="brown")collectedBrown=true;
+
+closest.remove();
+
+updateProgress();
+
+if(collectedYellow && collectedBrown){
+completeLevel();
+}
+
+}else{
+
+closest.remove();
+penalty();
+}
+}
+
+function updateProgress(){
+
+let count=0;
+if(collectedYellow)count++;
+if(collectedBrown)count++;
+
+document.getElementById("score").innerText="🎨 "+count+" / 2";
+document.getElementById("progressFill").style.width=(count*50)+"%";
+}
+
+function penalty(){
+
+let score=document.getElementById("score");
+
+score.innerText="❌ Wrong colour!";
+
+setTimeout(()=>{
+updateProgress();
+},800);
+}
+
+/* Level complete */
+function completeLevel(){
+
+gameRunning=false;
+stopBalloons();
+
+if(currentLevel<20){
+
+document.getElementById("messageTitle").innerText="🎉 Level Complete!";
+document.getElementById("messageText").innerText=
+"Great! The diya received both correct colours.";
+
+document.getElementById("message").style.display="block";
+
+}else{
+
+document.getElementById("messageTitle").innerText="🏆 20 Levels Complete!";
+document.getElementById("messageText").innerText=
+"Excellent! More ColorHop levels will be added in future updates.";
+
+document.getElementById("message").style.display="block";
+}
+}
+
+function closeMessage(){
+
+document.getElementById("message").style.display="none";
+
+if(currentLevel<20){
+currentLevel++;
+resetLevel();
+}else{
+goHome();
+}
+}
+
+function showSmallMessage(text){
+
+let msg=document.getElementById("message");
+
+document.getElementById("messageTitle").innerText="🎈";
+document.getElementById("messageText").innerText=text;
+msg.querySelector("button").style.display="none";
+msg.style.display="block";
+
+setTimeout(()=>{
+msg.style.display="none";
+msg.querySelector("button").style.display="block";
+},1000);
 }
 
 </script>
 
 </body>
-                             </html>
+</html>
