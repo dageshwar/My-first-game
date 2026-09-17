@@ -1,1242 +1,691 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>ColorHop</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-  user-select:none;
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif}
+button{border:0}
 
-html,body{
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  font-family:Arial,sans-serif;
-}
+.screen{position:fixed;inset:0;display:none}
+.screen.active{display:block}
 
-body{
-  background:#b9efc2;
-}
-
-button{
-  border:0;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-/* ================= SPLASH ================= */
-
+/* SPLASH */
 #splash{
-  position:fixed;
-  inset:0;
-  z-index:100;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(#a8e6b0,#e7ffd9);
+ display:flex;align-items:center;justify-content:center;flex-direction:column;
+ background:linear-gradient(#a5e9b5,#efffdc)
 }
+.logo{font-size:52px;font-weight:900;color:#278247;text-shadow:0 4px white}
+.logo span{color:#f0b900}
 
-.logo{
-  font-size:48px;
-  font-weight:900;
-  color:#238b45;
-  text-shadow:0 4px 0 #fff;
-}
-
-.logo span{
-  color:#f2b705;
-}
-
-.tagline{
-  margin-top:10px;
-  color:#39734b;
-  font-size:16px;
-}
-
-/* ================= SCREENS ================= */
-
-.screen{
-  position:fixed;
-  inset:0;
-  display:none;
-}
-
-.screen.active{
-  display:block;
-}
-
-/* ================= HOME ================= */
-
+/* HOME */
 #home{
-  background:
-    linear-gradient(#9ee8b0 0%,#d9f9c8 60%,#8bd16d 100%);
-  overflow:hidden;
+ background:
+ radial-gradient(circle at 82% 12%,#fff2a0 0 5%,transparent 6%),
+ linear-gradient(#91ddb0 0%,#dff8ce 55%,#75bd61 100%);
 }
-
-.sun{
-  position:absolute;
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  background:#ffe477;
-  top:35px;
-  right:30px;
-  box-shadow:0 0 30px #fff3a1;
+.home{
+ position:absolute;top:16%;left:8%;right:8%;text-align:center
 }
-
-.cloud{
-  position:absolute;
-  background:white;
-  width:100px;
-  height:30px;
-  border-radius:30px;
-  opacity:.75;
-}
-
-.cloud:before,
-.cloud:after{
-  content:"";
-  position:absolute;
-  background:white;
-  border-radius:50%;
-}
-
-.cloud:before{
-  width:45px;
-  height:45px;
-  left:15px;
-  top:-20px;
-}
-
-.cloud:after{
-  width:55px;
-  height:55px;
-  right:10px;
-  top:-28px;
-}
-
-.c1{top:90px;left:25px}
-.c2{top:170px;right:80px;transform:scale(.7)}
-
-.homeContent{
-  position:absolute;
-  top:18%;
-  left:7%;
-  right:7%;
-  text-align:center;
-}
-
-.homeTitle{
-  font-size:43px;
-  color:#237c40;
-  font-weight:900;
-  text-shadow:0 3px white;
-}
-
-.homeTitle span{
-  color:#efb900;
-}
-
-.menu{
-  margin-top:30px;
-  display:grid;
-  gap:13px;
-}
-
+.title{font-size:48px;font-weight:900;color:#23783f;text-shadow:0 4px white}
+.title span{color:#eeb500}
+.menu{margin-top:28px;display:grid;gap:12px}
 .menu button{
-  padding:16px;
-  border-radius:20px;
-  background:rgba(255,255,255,.88);
-  color:#267640;
-  font-size:18px;
-  box-shadow:0 5px 12px rgba(0,0,0,.15);
+ padding:15px;border-radius:19px;background:#fffffff0;color:#287541;
+ font-size:18px;font-weight:bold;box-shadow:0 5px 13px #0002
 }
+.tree{position:absolute;bottom:-5px;font-size:105px}
+.tree1{left:-15px}.tree2{right:-15px}
 
-.menu button:active{
-  transform:scale(.96);
-}
-
-.tree{
-  position:absolute;
-  bottom:0;
-  font-size:95px;
-}
-
-.t1{left:-8px}
-.t2{right:-10px}
-
-/* ================= INFO ================= */
-
-#info{
-  background:linear-gradient(#b8f0c0,#eaffd9);
-  padding:25px;
-}
-
+/* INFO */
+#info{background:linear-gradient(#a9eab5,#e5ffd6);padding:30px}
 .infoBox{
-  background:white;
-  border-radius:25px;
-  padding:25px;
-  max-width:500px;
-  margin:40px auto;
-  text-align:center;
-  box-shadow:0 8px 20px rgba(0,0,0,.15);
+ margin:45px auto;background:white;border-radius:25px;padding:25px;
+ max-width:500px;text-align:center;box-shadow:0 8px 20px #0002
 }
+.infoBox h2{color:#287c43}
+.back{padding:12px 25px;border-radius:15px;background:#29834a;color:white}
 
-.infoBox h2{
-  color:#258145;
-}
-
-.back{
-  background:#26864a;
-  color:white;
-  padding:12px 25px;
-  border-radius:15px;
-  margin-top:20px;
-}
-
-/* ================= GAME ================= */
-
+/* GAME WORLD */
 #game{
-  background:
-    linear-gradient(#a5e9b3 0%,#d9f8ca 50%,#83ce68 100%);
+ overflow:hidden;
+ background:linear-gradient(#8bd9ae 0%,#c8f0c0 46%,#6fbd60 100%);
 }
 
-.skyCloud{
-  position:absolute;
-  top:35px;
-  width:110px;
-  height:32px;
-  background:#fff;
-  border-radius:30px;
-  opacity:.65;
+/* SUN */
+.sun{
+ position:absolute;width:76px;height:76px;border-radius:50%;
+ background:#ffe67b;right:24px;top:34px;
+ box-shadow:0 0 35px #fff4a0
 }
 
-.skyCloud:before,
-.skyCloud:after{
-  content:"";
-  position:absolute;
-  background:#fff;
-  border-radius:50%;
+/* CLOUDS */
+.cloud{
+ position:absolute;width:105px;height:28px;background:#fff;border-radius:30px;
+ opacity:.7
+}
+.cloud:before,.cloud:after{
+ content:"";position:absolute;background:white;border-radius:50%
+}
+.cloud:before{width:45px;height:45px;left:15px;top:-20px}
+.cloud:after{width:50px;height:50px;right:8px;top:-25px}
+.c1{top:65px;left:12px}.c2{top:135px;right:65px;transform:scale(.7)}
+
+/* FAR HILLS */
+.hills{
+ position:absolute;left:0;right:0;top:180px;height:160px;
+ background:
+ linear-gradient(135deg,transparent 50%,#78b57a 51%) 0 0/210px 160px,
+ linear-gradient(225deg,transparent 50%,#6eaa72 51%) 105px 0/210px 160px;
+ opacity:.75
 }
 
-.skyCloud:before{
-  width:45px;
-  height:45px;
-  left:15px;
-  top:-20px;
-}
+/* TREES */
+.worldTree{position:absolute;font-size:62px;z-index:3}
+.wt1{left:2%;bottom:27%}.wt2{right:3%;bottom:29%}
+.wt3{left:22%;bottom:39%;font-size:45px}.wt4{right:24%;bottom:43%;font-size:48px}
 
-.skyCloud:after{
-  width:55px;
-  height:55px;
-  right:10px;
-  top:-27px;
-}
-
-.sc1{left:15px}
-.sc2{right:20px;top:105px;transform:scale(.65)}
-
-.mountains{
-  position:absolute;
-  left:0;
-  right:0;
-  top:130px;
-  height:160px;
-  background:
-    linear-gradient(135deg,transparent 50%,#8dc98b 51%) 0 0/180px 160px,
-    linear-gradient(225deg,transparent 50%,#78b97c 51%) 90px 0/180px 160px;
-  opacity:.75;
-}
-
-/* ground */
-
+/* GROUND */
 .ground{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  height:31%;
-  background:linear-gradient(#75c85f,#4fa84f);
+ position:absolute;left:0;right:0;bottom:0;height:31%;
+ background:linear-gradient(#76c966,#4caa50)
 }
 
-.grass{
-  position:absolute;
-  bottom:27%;
-  left:0;
-  right:0;
-  height:18px;
-  background:#51aa4b;
+/* TRAIL - ONE CONTINUOUS ROAD */
+.trail{
+ position:absolute;
+ z-index:4;
+ left:-10%;
+ right:-10%;
+ bottom:25%;
+ height:115px;
+ background:#bd8958;
+ border-top:8px solid #996841;
+ border-bottom:8px solid #996841;
+ transform:rotate(-2deg);
+ border-radius:55px;
+ box-shadow:0 10px 0 #0001;
 }
 
-/* ================= TOP UI ================= */
-
-.gameTop{
-  position:absolute;
-  top:12px;
-  left:10px;
-  right:10px;
-  z-index:30;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
+/* road highlights */
+.roadLine{
+ position:absolute;
+ z-index:5;
+ left:-5%;right:-5%;bottom:31%;
+ height:5px;
+ background:repeating-linear-gradient(
+  90deg,#ead08a 0 35px,transparent 35px 65px
+ );
+ transform:rotate(-2deg);
+ opacity:.8
 }
 
-.level{
-  background:rgba(255,255,255,.9);
-  padding:9px 13px;
-  border-radius:15px;
-  color:#247541;
-  font-weight:bold;
-}
-
-.catchBox{
-  background:rgba(255,255,255,.94);
-  padding:9px 12px;
-  border-radius:15px;
-  font-size:13px;
-  color:#555;
-  text-align:center;
-}
-
-.progress{
-  width:90px;
-  height:8px;
-  margin-top:5px;
-  background:#ddd;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.progressFill{
-  height:100%;
-  width:0%;
-  background:#f0b900;
-  transition:.3s;
-}
-
-/* ================= PATH ================= */
-
-.path{
-  position:absolute;
-  height:65px;
-  background:#c9945e;
-  border:5px solid #a87548;
-  border-radius:35px;
-  box-shadow:0 8px 0 rgba(87,76,48,.15);
-}
-
-.p1{
-  width:75%;
-  left:-5%;
-  bottom:25%;
-  transform:rotate(3deg);
-}
-
-.p2{
-  width:60%;
-  right:-7%;
-  bottom:35%;
-  transform:rotate(-6deg);
-}
-
-.p3{
-  width:58%;
-  left:0;
-  bottom:46%;
-  transform:rotate(5deg);
-}
-
-.p4{
-  width:50%;
-  right:2%;
-  bottom:56%;
-  transform:rotate(-7deg);
-}
-
-/* gaps / stones */
-
+/* small stones */
 .stone{
-  position:absolute;
-  width:22px;
-  height:12px;
-  border-radius:50%;
-  background:#8b704f;
-  opacity:.7;
+ position:absolute;z-index:6;width:25px;height:13px;
+ border-radius:50%;background:#75634c
 }
 
-/* ================= CHARACTER ================= */
-
-#player{
-  position:absolute;
-  z-index:20;
-  width:65px;
-  height:105px;
-  left:45%;
-  bottom:27%;
-  transition:left .12s,bottom .18s;
+/* TOP UI */
+.gameTop{
+ position:absolute;z-index:30;top:12px;left:10px;right:10px;
+ display:flex;justify-content:space-between;align-items:center
 }
-
-.head{
-  position:absolute;
-  width:48px;
-  height:48px;
-  left:8px;
-  top:0;
-  border-radius:50%;
-  background:#ffd2a1;
-  border:3px solid #a96e43;
+.level,.catchBox{
+ background:#fffffff2;border-radius:15px;padding:9px 12px;
+ color:#277441;font-weight:bold
 }
+.catchBox{text-align:center;font-size:13px;color:#555}
+.progress{width:85px;height:8px;background:#ddd;border-radius:10px;margin-top:5px}
+.progressFill{height:100%;width:0;background:#f1bb19;border-radius:10px;transition:.3s}
 
-.hair{
-  position:absolute;
-  width:52px;
-  height:22px;
-  left:5px;
-  top:-5px;
-  background:#5a3828;
-  border-radius:50% 50% 35% 35%;
-}
-
-.eye{
-  position:absolute;
-  width:6px;
-  height:8px;
-  border-radius:50%;
-  background:#333;
-  top:19px;
-}
-
-.e1{left:19px}
-.e2{right:19px}
-
-.mouth{
-  position:absolute;
-  width:15px;
-  height:8px;
-  border-bottom:3px solid #c25c5c;
-  border-radius:50%;
-  left:16px;
-  top:30px;
-}
-
-.body{
-  position:absolute;
-  width:42px;
-  height:45px;
-  left:11px;
-  top:47px;
-  background:#4a9bdf;
-  border-radius:15px;
-}
-
-.arm{
-  position:absolute;
-  width:11px;
-  height:37px;
-  background:#ffd2a1;
-  border-radius:10px;
-  top:51px;
-}
-
-.a1{left:1px;transform:rotate(25deg)}
-.a2{right:1px;transform:rotate(-25deg)}
-
-.leg{
-  position:absolute;
-  width:13px;
-  height:32px;
-  background:#384d79;
-  border-radius:10px;
-  top:87px;
-}
-
-.l1{left:15px}
-.l2{right:15px}
-
-/* ================= BALLOON ================= */
-
-.balloon{
-  position:absolute;
-  z-index:18;
-  width:42px;
-  height:52px;
-  border-radius:50% 50% 48% 48%;
-  transform:translate(-50%,0);
-  box-shadow:
-    inset -7px -8px 10px rgba(0,0,0,.12),
-    inset 8px 6px 10px rgba(255,255,255,.45);
-}
-
-.balloon:before{
-  content:"";
-  position:absolute;
-  width:7px;
-  height:7px;
-  background:inherit;
-  bottom:-4px;
-  left:18px;
-  transform:rotate(45deg);
-}
-
-.balloon:after{
-  content:"";
-  position:absolute;
-  width:1px;
-  height:90px;
-  background:#666;
-  left:20px;
-  top:50px;
-}
-
-.shine{
-  position:absolute;
-  width:9px;
-  height:15px;
-  border-radius:50%;
-  background:rgba(255,255,255,.7);
-  left:9px;
-  top:9px;
-}
-
-.yellow{background:#ffd51f}
-.brown{background:#8a5a32}
-.red{background:#ef5350}
-.blue{background:#4a9ee8}
-.pink{background:#ed70ad}
-.green{background:#57bd68}
-.purple{background:#9b6bea}
-
-/* ================= TARGET ================= */
-
+/* TARGET */
 .target{
-  position:absolute;
-  z-index:15;
-  top:88px;
-  left:50%;
-  transform:translateX(-50%);
-  width:82px;
-  height:90px;
-  background:rgba(255,255,255,.82);
-  border-radius:22px;
-  text-align:center;
-  padding-top:7px;
-  box-shadow:0 5px 12px rgba(0,0,0,.12);
+ position:absolute;z-index:25;top:88px;left:50%;
+ transform:translateX(-50%);
+ width:88px;height:91px;background:#ffffffe8;border-radius:21px;
+ text-align:center;padding:6px;box-shadow:0 5px 14px #0002
 }
-
-.targetTitle{
-  font-size:11px;
-  color:#666;
+.target small{color:#777}
+.lamp{position:relative;width:65px;height:55px;margin:auto}
+.lampBody{
+ position:absolute;left:7px;top:25px;width:51px;height:22px;
+ background:#eee;border-radius:8px 8px 25px 25px
 }
-
-.lamp{
-  position:relative;
-  margin:5px auto;
-  width:60px;
-  height:45px;
-}
-
 .lampTop{
-  position:absolute;
-  left:15px;
-  top:5px;
-  width:30px;
-  height:16px;
-  border-radius:50% 50% 20% 20%;
-  background:#eee;
+ position:absolute;left:15px;top:17px;width:35px;height:12px;
+ background:#eee;border-radius:50%
 }
-
-.lampBottom{
-  position:absolute;
-  left:8px;
-  top:18px;
-  width:44px;
-  height:20px;
-  border-radius:10px 10px 22px 22px;
-  background:#eee;
-}
-
 .flame{
-  position:absolute;
-  width:14px;
-  height:22px;
-  left:23px;
-  top:-13px;
-  background:#eee;
-  border-radius:50% 50% 50% 0;
-  transform:rotate(45deg);
+ position:absolute;left:26px;top:1px;width:15px;height:24px;
+ background:#eee;border-radius:50% 50% 50% 0;transform:rotate(45deg)
+}
+.target.done .lampBody,.target.done .lampTop{background:#8b5a31}
+.target.done .flame{background:#ffd21d}
+
+/* CHARACTER */
+#player{
+ position:absolute;z-index:20;
+ width:70px;height:110px;
+ left:42%;bottom:29%;
+ transition:left .12s,bottom .2s;
+ transform:scaleX(1);
 }
 
-.target.colored .lampTop,
-.target.colored .lampBottom{
-  background:#9a6334;
+/* side-facing character */
+.face{
+ position:absolute;width:48px;height:48px;left:9px;top:3px;
+ background:#ffd0a0;border:3px solid #a56d45;border-radius:48%
+}
+.hair{
+ position:absolute;z-index:2;width:48px;height:22px;left:7px;top:-3px;
+ background:#543629;border-radius:50% 55% 35% 30%
+}
+.eye{
+ position:absolute;width:7px;height:9px;border-radius:50%;
+ background:#222;right:8px;top:17px
+}
+.nose{
+ position:absolute;right:-5px;top:24px;
+ width:9px;height:7px;border-radius:50%;background:#e6a06f
+}
+.smile{
+ position:absolute;right:7px;top:30px;width:14px;height:7px;
+ border-bottom:2px solid #a94f4f;border-radius:50%
+}
+.body{
+ position:absolute;left:15px;top:49px;width:42px;height:43px;
+ background:#398fd1;border-radius:15px 12px 11px 11px
+}
+.backpack{
+ position:absolute;left:5px;top:53px;width:16px;height:34px;
+ background:#e6a52b;border-radius:9px
+}
+.arm{
+ position:absolute;top:53px;width:10px;height:36px;
+ background:#ffd0a0;border-radius:10px
+}
+.arm1{right:2px;transform:rotate(-18deg)}
+.arm2{left:8px;transform:rotate(20deg)}
+.leg{
+ position:absolute;top:86px;width:13px;height:31px;
+ background:#394c76;border-radius:10px
+}
+.leg1{right:16px}.leg2{left:19px}
+
+/* walking animation */
+.walk .leg1{animation:walk1 .28s infinite alternate}
+.walk .leg2{animation:walk2 .28s infinite alternate}
+.walk .arm1{animation:arm1 .28s infinite alternate}
+.walk .arm2{animation:arm2 .28s infinite alternate}
+
+@keyframes walk1{to{transform:rotate(25deg)}}
+@keyframes walk2{to{transform:rotate(-25deg)}}
+@keyframes arm1{to{transform:rotate(20deg)}}
+@keyframes arm2{to{transform:rotate(-15deg)}}
+
+/* BALLOONS */
+.balloon{
+ position:absolute;z-index:18;
+ width:43px;height:54px;
+ border-radius:50% 50% 47% 47%;
+ box-shadow:inset -8px -9px 12px #0002,inset 8px 7px 12px #fff7;
+}
+.balloon:before{
+ content:"";position:absolute;bottom:-5px;left:18px;
+ width:8px;height:8px;background:inherit;transform:rotate(45deg)
+}
+.string{
+ position:absolute;left:21px;top:51px;width:1px;height:100px;
+ background:#666
+}
+.shine{
+ position:absolute;left:9px;top:9px;width:9px;height:16px;
+ border-radius:50%;background:#fff9
+}
+.yellow{background:#ffd522}.brown{background:#8a5a32}
+.red{background:#ed5555}.blue{background:#4b9fe5}
+.pink{background:#e56eae}.green{background:#55ba68}
+.purple{background:#9568dc}
+
+/* floating balloon animation */
+.float{
+ animation:balloonFloat .8s ease-in-out infinite alternate
+}
+@keyframes balloonFloat{
+ from{margin-left:-2px}
+ to{margin-left:3px}
 }
 
-.target.colored .flame{
-  background:#ffd21f;
-}
-
-/* ================= CONTROLS ================= */
-
-/*
-  बहुत जरूरी:
-  bottom: 90px रखा गया है ताकि Android के
-  Back/Home navigation area से ऊपर रहे।
-*/
-
+/* CONTROLS */
 .controls{
-  position:absolute;
-  z-index:50;
-  left:0;
-  right:0;
-  bottom:92px;
-  padding:0 14px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  pointer-events:none;
+ position:absolute;z-index:50;left:0;right:0;bottom:92px;
+ padding:0 14px;display:flex;justify-content:space-between;
+ pointer-events:none
 }
-
-.controlGroup{
-  display:flex;
-  gap:10px;
-  pointer-events:auto;
-}
-
+.group{display:flex;gap:10px;pointer-events:auto}
 .control{
-  width:62px;
-  height:62px;
-  border-radius:20px;
-  background:rgba(255,255,255,.94);
-  color:#277344;
-  font-size:25px;
-  box-shadow:0 5px 12px rgba(0,0,0,.22);
+ width:62px;height:62px;border-radius:20px;
+ background:#fffffff2;color:#267443;font-size:24px;
+ box-shadow:0 5px 13px #0003
 }
-
-.control.catch{
-  width:74px;
-  background:#ffd34b;
-  color:#684b00;
-  font-size:17px;
+.catch{
+ width:75px;background:#ffd348;color:#684b00;font-size:16px
 }
-
-.control:active{
-  transform:scale(.88);
-}
-
-/* ================= MESSAGE ================= */
+.control:active{transform:scale(.87)}
 
 .message{
-  position:absolute;
-  z-index:80;
-  top:48%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:rgba(255,255,255,.96);
-  padding:18px 25px;
-  border-radius:20px;
-  color:#277344;
-  font-size:19px;
-  font-weight:bold;
-  text-align:center;
-  display:none;
-  box-shadow:0 8px 20px rgba(0,0,0,.2);
+ position:absolute;z-index:90;top:48%;left:50%;
+ transform:translate(-50%,-50%);
+ display:none;background:#fffffff5;padding:17px 24px;
+ border-radius:20px;color:#287a43;font-size:18px;font-weight:bold;
+ box-shadow:0 8px 20px #0003;white-space:nowrap
 }
 
-/* ================= MOBILE ================= */
-
 @media(max-height:650px){
-  .controls{
-    bottom:75px;
-  }
-
-  .control{
-    width:55px;
-    height:55px;
-  }
-
-  .control.catch{
-    width:68px;
-  }
-
-  .target{
-    top:75px;
-  }
+ .controls{bottom:76px}
+ .control{width:55px;height:55px}
+ .catch{width:68px}
+ .target{top:75px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- SPLASH -->
 <section id="splash">
-  <div class="logo">Color<span>Hop</span></div>
-  <div class="tagline">Catch colors. Complete the picture.</div>
+ <div class="logo">Color<span>Hop</span></div>
+ <p>Catch colors. Complete the picture.</p>
 </section>
 
-<!-- HOME -->
 <section id="home" class="screen">
+ <div class="sun"></div>
+ <div class="cloud c1"></div>
+ <div class="cloud c2"></div>
 
-  <div class="sun"></div>
-  <div class="cloud c1"></div>
-  <div class="cloud c2"></div>
-
-  <div class="homeContent">
-    <div class="homeTitle">Color<span>Hop</span></div>
-
-    <div class="menu">
-      <button onclick="startGame()">▶ Play</button>
-      <button onclick="showInfo('profile')">👤 Profile</button>
-      <button onclick="showInfo('settings')">⚙ Settings</button>
-      <button onclick="showInfo('how')">❓ How to Play</button>
-      <button onclick="showInfo('language')">🌐 Language</button>
-    </div>
+ <div class="home">
+  <div class="title">Color<span>Hop</span></div>
+  <div class="menu">
+   <button onclick="startGame()">▶ Play</button>
+   <button onclick="info('Profile','Your adventure profile will appear here.')">👤 Profile</button>
+   <button onclick="info('Settings','Game settings will be added here.')">⚙ Settings</button>
+   <button onclick="info('How to Play','Move left and right, jump when needed and catch only the required colors.')">❓ How to Play</button>
+   <button onclick="info('Language','Multiple working languages will be added.')">🌐 Language</button>
   </div>
+ </div>
 
-  <div class="tree t1">🌳</div>
-  <div class="tree t2">🌳</div>
+ <div class="tree tree1">🌳</div>
+ <div class="tree tree2">🌳</div>
 </section>
 
-<!-- INFO -->
 <section id="info" class="screen">
-  <div class="infoBox">
-    <h2 id="infoTitle">ColorHop</h2>
-    <p id="infoText"></p>
-    <button class="back" onclick="goHome()">← Back</button>
-  </div>
+ <div class="infoBox">
+  <h2 id="infoTitle"></h2>
+  <p id="infoText"></p>
+  <button class="back" onclick="home()">← Back</button>
+ </div>
 </section>
 
-<!-- GAME -->
 <section id="game" class="screen">
 
-  <div class="skyCloud sc1"></div>
-  <div class="skyCloud sc2"></div>
-  <div class="mountains"></div>
+ <div class="sun"></div>
+ <div class="cloud c1"></div>
+ <div class="cloud c2"></div>
+ <div class="hills"></div>
 
-  <div class="gameTop">
-    <div class="level">LEVEL <span id="levelNo">1</span></div>
+ <div class="worldTree wt1">🌳</div>
+ <div class="worldTree wt2">🌳</div>
+ <div class="worldTree wt3">🌲</div>
+ <div class="worldTree wt4">🌲</div>
 
-    <div class="catchBox">
-      Catch:
-      <b id="requiredText">🟡 + 🟤</b>
-      <div class="progress">
-        <div class="progressFill" id="progressFill"></div>
-      </div>
-    </div>
+ <div class="ground"></div>
+
+ <div class="trail"></div>
+ <div class="roadLine"></div>
+
+ <div class="stone" style="left:14%;bottom:30%"></div>
+ <div class="stone" style="left:29%;bottom:34%"></div>
+ <div class="stone" style="right:21%;bottom:29%"></div>
+ <div class="stone" style="right:7%;bottom:34%"></div>
+
+ <div class="gameTop">
+  <div class="level">LEVEL <span id="level">1</span></div>
+
+  <div class="catchBox">
+   Catch: <b>🟡 + 🟤</b>
+   <div class="progress">
+    <div class="progressFill" id="progress"></div>
+   </div>
   </div>
+ </div>
 
-  <div class="target" id="target">
-    <div class="targetTitle">Complete</div>
-    <div class="lamp">
-      <div class="flame"></div>
-      <div class="lampTop"></div>
-      <div class="lampBottom"></div>
-    </div>
+ <div class="target" id="target">
+  <small>Complete</small>
+  <div class="lamp">
+   <div class="flame"></div>
+   <div class="lampTop"></div>
+   <div class="lampBody"></div>
   </div>
+ </div>
 
-  <!-- Paths -->
-  <div class="path p1"></div>
-  <div class="path p2"></div>
-  <div class="path p3"></div>
-  <div class="path p4"></div>
-
-  <div class="ground"></div>
-  <div class="grass"></div>
-
-  <!-- Stones -->
-  <div class="stone" style="left:15%;bottom:29%"></div>
-  <div class="stone" style="left:30%;bottom:27%"></div>
-  <div class="stone" style="right:20%;bottom:32%"></div>
-  <div class="stone" style="right:7%;bottom:28%"></div>
-
-  <!-- PLAYER -->
-  <div id="player">
-    <div class="hair"></div>
-    <div class="head">
-      <div class="eye e1"></div>
-      <div class="eye e2"></div>
-      <div class="mouth"></div>
-    </div>
-    <div class="body"></div>
-    <div class="arm a1"></div>
-    <div class="arm a2"></div>
-    <div class="leg l1"></div>
-    <div class="leg l2"></div>
+ <div id="player" class="walk">
+  <div class="hair"></div>
+  <div class="face">
+   <div class="eye"></div>
+   <div class="nose"></div>
+   <div class="smile"></div>
   </div>
+  <div class="backpack"></div>
+  <div class="body"></div>
+  <div class="arm arm1"></div>
+  <div class="arm arm2"></div>
+  <div class="leg leg1"></div>
+  <div class="leg leg2"></div>
+ </div>
 
-  <!-- CONTROLS -->
-  <div class="controls">
-
-    <div class="controlGroup">
-      <button class="control" onclick="moveLeft()">◀</button>
-      <button class="control" onclick="moveRight()">▶</button>
-    </div>
-
-    <div class="controlGroup">
-      <button class="control" onclick="jump()">⬆</button>
-      <button class="control catch" onclick="catchBalloon()">CATCH</button>
-    </div>
-
+ <div class="controls">
+  <div class="group">
+   <button class="control" onclick="move(-1)">◀</button>
+   <button class="control" onclick="move(1)">▶</button>
   </div>
+  <div class="group">
+   <button class="control" onclick="jump()">⬆</button>
+   <button class="control catch" onclick="catchBalloon()">CATCH</button>
+  </div>
+ </div>
 
-  <div class="message" id="message"></div>
-
+ <div class="message" id="message"></div>
 </section>
 
 <script>
+let level=1;
+let px=42;
+let bottom=29;
+let jumping=false;
+let balloons=[];
+let collected={yellow:false,brown:false};
+let spawnInterval;
+let running=false;
 
-/* ================= GAME DATA ================= */
-
-let level = 1;
-let playerX = 45;
-let playerBottom = 27;
-let jumping = false;
-
-let balloons = [];
-let collected = {
-  yellow:false,
-  brown:false
-};
-
-let spawnTimer = null;
-let gameRunning = false;
-
-const colors = [
-  "yellow",
-  "brown",
-  "red",
-  "blue",
-  "pink",
-  "green",
-  "purple"
-];
-
-/* ================= SCREEN ================= */
+const colors=["yellow","brown","red","blue","pink","green","purple"];
 
 setTimeout(()=>{
-  document.getElementById("splash").style.display="none";
-  document.getElementById("home").classList.add("active");
+ document.getElementById("splash").style.display="none";
+ document.getElementById("home").classList.add("active");
 },5000);
 
 function startGame(){
-
-  document.getElementById("home").classList.remove("active");
-  document.getElementById("info").classList.remove("active");
-  document.getElementById("game").classList.add("active");
-
-  level = 1;
-  gameRunning = true;
-
-  setupLevel();
+ document.getElementById("home").classList.remove("active");
+ document.getElementById("info").classList.remove("active");
+ document.getElementById("game").classList.add("active");
+ running=true;
+ level=1;
+ setup();
 }
 
-function goHome(){
-
-  gameRunning=false;
-
-  document.getElementById("game").classList.remove("active");
-  document.getElementById("info").classList.remove("active");
-  document.getElementById("home").classList.add("active");
-
-  clearAllBalloons();
+function home(){
+ running=false;
+ clearInterval(spawnInterval);
+ clearBalloons();
+ document.getElementById("game").classList.remove("active");
+ document.getElementById("info").classList.remove("active");
+ document.getElementById("home").classList.add("active");
 }
 
-/* ================= INFO ================= */
+function info(t,x){
+ document.getElementById("home").classList.remove("active");
+ document.getElementById("info").classList.add("active");
+ document.getElementById("infoTitle").innerText=t;
+ document.getElementById("infoText").innerText=x;
+}
 
-function showInfo(type){
+function setup(){
+ clearBalloons();
+ collected={yellow:false,brown:false};
+ px=42;
+ bottom=29;
+ updatePlayer();
 
-  document.getElementById("home").classList.remove("active");
-  document.getElementById("info").classList.add("active");
+ document.getElementById("level").innerText=level;
+ document.getElementById("progress").style.width="0%";
+ document.getElementById("target").classList.remove("done");
 
-  const title=document.getElementById("infoTitle");
-  const text=document.getElementById("infoText");
+ spawnBalloon();
 
-  if(type==="profile"){
-    title.innerText="👤 Profile";
-    text.innerText="Your ColorHop adventure profile will appear here.";
+ clearInterval(spawnInterval);
+
+ let time=Math.max(1150,2100-level*40);
+
+ spawnInterval=setInterval(()=>{
+  if(running) spawnBalloon();
+ },time);
+}
+
+/* BALLOONS START AT THE BOTTOM AND FLY UP */
+function spawnBalloon(){
+
+ if(balloons.length>=4)return;
+
+ let b=document.createElement("div");
+ b.className="balloon float";
+
+ let r=Math.random();
+ let color;
+
+ if(r<.28 && !collected.yellow) color="yellow";
+ else if(r<.56 && !collected.brown) color="brown";
+ else color=colors[Math.floor(Math.random()*colors.length)];
+
+ b.classList.add(color);
+
+ let shine=document.createElement("div");
+ shine.className="shine";
+
+ let string=document.createElement("div");
+ string.className="string";
+
+ b.appendChild(shine);
+ b.appendChild(string);
+
+ /*
+  IMPORTANT:
+  Balloon now starts from bottom 22%-27%.
+  It then continuously rises.
+ */
+ let x=8+Math.random()*84;
+ let y=24+Math.random()*5;
+
+ b.style.left=x+"%";
+ b.style.bottom=y+"%";
+
+ document.getElementById("game").appendChild(b);
+
+ balloons.push({
+  el:b,
+  x:x,
+  y:y,
+  speed:.11+level*.012,
+  color:color
+ });
+}
+
+/* CONTINUOUS UPWARD MOVEMENT */
+function animate(){
+ if(running){
+
+  for(let i=balloons.length-1;i>=0;i--){
+
+   let b=balloons[i];
+
+   b.y+=b.speed;
+   b.el.style.bottom=b.y+"%";
+
+   /* tiny side movement */
+   b.x+=Math.sin(Date.now()/500+i)*.008;
+   b.el.style.left=b.x+"%";
+
+   /* remove after reaching sky */
+   if(b.y>105){
+    b.el.remove();
+    balloons.splice(i,1);
+   }
   }
+ }
 
-  if(type==="settings"){
-    title.innerText="⚙ Settings";
-    text.innerText="Sound, vibration and game settings will be added here.";
-  }
-
-  if(type==="how"){
-    title.innerText="❓ How to Play";
-    text.innerText=
-      "Move left and right. Jump when needed. Catch only the required colors. Wrong colors give a penalty. Complete the picture to finish the level.";
-  }
-
-  if(type==="language"){
-    title.innerText="🌐 Language";
-    text.innerText=
-      "Language selection will be added next. Each selected language will work inside the game.";
-  }
+ requestAnimationFrame(animate);
 }
-
-/* ================= LEVEL ================= */
-
-function setupLevel(){
-
-  clearAllBalloons();
-
-  collected.yellow=false;
-  collected.brown=false;
-
-  playerX=45;
-  playerBottom=27;
-  jumping=false;
-
-  document.getElementById("levelNo").innerText=level;
-  document.getElementById("progressFill").style.width="0%";
-  document.getElementById("target").classList.remove("colored");
-
-  /*
-    शुरुआत में Yellow + Brown जरूरी।
-    बाद में भी यही target रहेगा ताकि game समझने में आसान रहे।
-  */
-
-  spawnNextBalloon();
-
-  clearInterval(spawnTimer);
-
-  /*
-    एक-एक balloon.
-    Level बढ़ने पर थोड़ी तेजी।
-  */
-
-  let interval=Math.max(1300,2300-(level*45));
-
-  spawnTimer=setInterval(()=>{
-    if(gameRunning){
-      spawnNextBalloon();
-    }
-  },interval);
-}
-
-/* ================= BALLOON SPAWN ================= */
-
-function spawnNextBalloon(){
-
-  /*
-    नीचे की जमीन के ऊपर से अलग-अलग X position.
-    अब balloon character के ऊपर से पैदा नहीं होगा।
-  */
-
-  const balloon=document.createElement("div");
-
-  balloon.className="balloon";
-
-  let color;
-
-  /*
-    कुछ balloons required colors,
-    कुछ wrong colors.
-  */
-
-  const random=Math.random();
-
-  if(random<0.38 && !collected.yellow){
-    color="yellow";
-  }
-  else if(random<0.70 && !collected.brown){
-    color="brown";
-  }
-  else{
-    color=colors[Math.floor(Math.random()*colors.length)];
-  }
-
-  balloon.classList.add(color);
-
-  const shine=document.createElement("div");
-  shine.className="shine";
-  balloon.appendChild(shine);
-
-  /*
-    Balloon नीचे से निकलेगा।
-    10% से 90% तक अलग-अलग जगह।
-  */
-
-  let x=10+Math.random()*80;
-
-  balloon.style.left=x+"%";
-  balloon.style.bottom="27%";
-
-  document.getElementById("game").appendChild(balloon);
-
-  balloons.push({
-    el:balloon,
-    x:x,
-    bottom:27,
-    color:color,
-    speed:0.075+(level*0.008)
-  });
-}
-
-/* ================= BALLOON MOVEMENT ================= */
-
-function moveBalloons(){
-
-  if(!gameRunning) return;
-
-  balloons.forEach((b,index)=>{
-
-    b.bottom += b.speed;
-
-    b.el.style.bottom=b.bottom+"%";
-
-    /*
-      Balloon screen के ऊपर चला जाए तो हटाएँ।
-    */
-
-    if(b.bottom>105){
-
-      b.el.remove();
-      balloons.splice(index,1);
-    }
-
-  });
-
-  requestAnimationFrame(moveBalloons);
-}
-
-moveBalloons();
-
-/* ================= PLAYER ================= */
-
-function moveLeft(){
-
-  if(!gameRunning) return;
-
-  playerX-=7;
-
-  if(playerX<5) playerX=5;
-
-  updatePlayer();
-}
-
-function moveRight(){
-
-  if(!gameRunning) return;
-
-  playerX+=7;
-
-  if(playerX>90) playerX=90;
-
-  updatePlayer();
-}
+animate();
 
 function updatePlayer(){
-
-  const player=document.getElementById("player");
-
-  player.style.left=playerX+"%";
-  player.style.bottom=playerBottom+"%";
+ let p=document.getElementById("player");
+ p.style.left=px+"%";
+ p.style.bottom=bottom+"%";
 }
 
-/* ================= JUMP ================= */
+function move(direction){
+
+ if(!running)return;
+
+ px+=direction*7;
+
+ if(px<4)px=4;
+ if(px>91)px=91;
+
+ updatePlayer();
+}
 
 function jump(){
 
-  if(!gameRunning || jumping) return;
+ if(jumping || !running)return;
 
-  jumping=true;
+ jumping=true;
+ bottom+=17;
+ updatePlayer();
 
-  playerBottom+=16;
-
+ setTimeout(()=>{
+  bottom-=17;
   updatePlayer();
-
-  setTimeout(()=>{
-
-    playerBottom-=16;
-
-    updatePlayer();
-
-    jumping=false;
-
-  },650);
+  jumping=false;
+ },600);
 }
-
-/* ================= CATCH ================= */
 
 function catchBalloon(){
 
-  if(!gameRunning) return;
+ if(!running)return;
 
-  const player=document.getElementById("player");
+ let player=document.getElementById("player");
+ let pr=player.getBoundingClientRect();
 
-  let best=null;
-  let bestDistance=999;
+ let closest=null;
+ let distance=999;
 
-  balloons.forEach((b)=>{
+ balloons.forEach(b=>{
 
-    const rect=b.el.getBoundingClientRect();
-    const playerRect=player.getBoundingClientRect();
+  let r=b.el.getBoundingClientRect();
 
-    const bx=rect.left+rect.width/2;
-    const by=rect.top+rect.height/2;
+  let bx=r.left+r.width/2;
+  let by=r.top+r.height/2;
 
-    const px=playerRect.left+playerRect.width/2;
-    const py=playerRect.top+playerRect.height/2;
+  let px2=pr.left+pr.width/2;
+  let py2=pr.top+pr.height/2;
 
-    const distance=Math.sqrt(
-      Math.pow(bx-px,2)+
-      Math.pow(by-py,2)
-    );
+  let d=Math.hypot(bx-px2,by-py2);
 
-    if(distance<bestDistance){
+  if(d<distance){
+   distance=d;
+   closest=b;
+  }
+ });
 
-      bestDistance=distance;
-      best=b;
-    }
+ if(closest && distance<125){
 
-  });
-
-  /*
-    Catch range.
-  */
-
-  if(best && bestDistance<115){
-
-    if(best.color==="yellow" || best.color==="brown"){
-
-      collectCorrect(best);
-
-    }else{
-
-      penalty(best);
-
-    }
-
+  if(closest.color==="yellow" || closest.color==="brown"){
+   correct(closest);
   }else{
-
-    showMessage("🎈 Move closer!");
-  }
-}
-
-/* ================= CORRECT ================= */
-
-function collectCorrect(balloon){
-
-  const color=balloon.color;
-
-  if(collected[color]){
-    balloon.el.remove();
-    balloons=balloons.filter(x=>x!==balloon);
-    return;
+   wrong(closest);
   }
 
-  collected[color]=true;
-
-  balloon.el.remove();
-  balloons=balloons.filter(x=>x!==balloon);
-
-  let count=0;
-
-  if(collected.yellow) count++;
-  if(collected.brown) count++;
-
-  document.getElementById("progressFill").style.width=
-    (count/2*100)+"%";
-
-  /*
-    Yellow + Brown पूरा होने पर target रंगीन।
-  */
-
-  if(count===2){
-
-    document.getElementById("target").classList.add("colored");
-
-    showMessage("✨ Picture Complete!");
-
-    clearInterval(spawnTimer);
-
-    setTimeout(nextLevel,1500);
-  }
-  else{
-
-    showMessage("✅ Correct Color!");
-  }
+ }else{
+  message("🎈 पास जाकर CATCH दबाएँ");
+ }
 }
 
-/* ================= PENALTY ================= */
+function correct(b){
 
-function penalty(balloon){
+ let c=b.color;
 
-  balloon.el.remove();
-  balloons=balloons.filter(x=>x!==balloon);
+ if(collected[c]){
+  removeBalloon(b);
+  return;
+ }
 
-  showMessage("❌ Wrong Color!");
+ collected[c]=true;
+ removeBalloon(b);
 
-  /*
-    थोड़ा समय बाद message अपने आप हटेगा।
-  */
+ let n=0;
+ if(collected.yellow)n++;
+ if(collected.brown)n++;
+
+ document.getElementById("progress").style.width=(n*50)+"%";
+
+ if(n===2){
+
+  document.getElementById("target").classList.add("done");
+
+  message("✨ Picture Complete!");
+
+  clearInterval(spawnInterval);
+
+  setTimeout(()=>{
+   level++;
+   if(level>20){
+    message("🏆 20 Levels Complete!");
+    level=1;
+    setTimeout(setup,1800);
+   }else{
+    setup();
+   }
+  },1300);
+
+ }else{
+  message("✅ सही रंग!");
+ }
 }
 
-/* ================= MESSAGE ================= */
-
-let messageTimer=null;
-
-function showMessage(text){
-
-  const msg=document.getElementById("message");
-
-  msg.innerText=text;
-  msg.style.display="block";
-
-  clearTimeout(messageTimer);
-
-  messageTimer=setTimeout(()=>{
-    msg.style.display="none";
-  },850);
+function wrong(b){
+ removeBalloon(b);
+ message("❌ गलत रंग!");
 }
 
-/* ================= NEXT LEVEL ================= */
-
-function nextLevel(){
-
-  if(!gameRunning) return;
-
-  level++;
-
-  if(level>20){
-
-    showMessage("🏆 20 Levels Complete!");
-
-    setTimeout(()=>{
-
-      level=1;
-      setupLevel();
-
-    },2200);
-
-    return;
-  }
-
-  setupLevel();
+function removeBalloon(b){
+ if(b.el)b.el.remove();
+ balloons=balloons.filter(x=>x!==b);
 }
 
-/* ================= CLEAR ================= */
-
-function clearAllBalloons(){
-
-  balloons.forEach(b=>{
-    if(b.el) b.el.remove();
-  });
-
-  balloons=[];
+function clearBalloons(){
+ balloons.forEach(b=>{
+  if(b.el)b.el.remove();
+ });
+ balloons=[];
 }
 
+let msgTimer;
+
+function message(t){
+ let m=document.getElementById("message");
+ m.innerText=t;
+ m.style.display="block";
+
+ clearTimeout(msgTimer);
+
+ msgTimer=setTimeout(()=>{
+  m.style.display="none";
+ },900);
+}
 </script>
 
 </body>
-</html>
+      </html>
