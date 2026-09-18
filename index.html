@@ -1,691 +1,338 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>ColorHop</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mobile Snake Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none; /* Prevents text selection on mobile */
+            -webkit-user-select: none;
+            touch-action: manipulation; /* Prevents zoom on fast tapping */
+        }
 
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif}
-button{border:0}
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-
+direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
 
-.screen{position:fixed;inset:0;display:none}
-.screen.active{display:block}
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 100vw;
+            padding: 10px;
+        }
 
-/* SPLASH */
-#splash{
- display:flex;align-items:center;justify-content:center;flex-direction:column;
- background:linear-gradient(#a5e9b5,#efffdc)
-}
-.logo{font-size:52px;font-weight:900;color:#278247;text-shadow:0 4px white}
-.logo span{color:#f0b900}
+        .header {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
 
-/* HOME */
-#home{
- background:
- radial-gradient(circle at 82% 12%,#fff2a0 0 5%,transparent 6%),
- linear-gradient(#91ddb0 0%,#dff8ce 55%,#75bd61 100%);
-}
-.home{
- position:absolute;top:16%;left:8%;right:8%;text-align:center
-}
-.title{font-size:48px;font-weight:900;color:#23783f;text-shadow:0 4px white}
-.title span{color:#eeb500}
-.menu{margin-top:28px;display:grid;gap:12px}
-.menu button{
- padding:15px;border-radius:19px;background:#fffffff0;color:#287541;
- font-size:18px;font-weight:bold;box-shadow:0 5px 13px #0002
-}
-.tree{position:absolute;bottom:-5px;font-size:105px}
-.tree1{left:-15px}.tree2{right:-15px}
+        canvas {
+            background-color: #000000;
+            border: 3px solid #333;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            max-width: 100%;
+            max-height: 50vh;
+        }
 
-/* INFO */
-#info{background:linear-gradient(#a9eab5,#e5ffd6);padding:30px}
-.infoBox{
- margin:45px auto;background:white;border-radius:25px;padding:25px;
- max-width:500px;text-align:center;box-shadow:0 8px 20px #0002
-}
-.infoBox h2{color:#287c43}
-.back{padding:12px 25px;border-radius:15px;background:#29834a;color:white}
+        /* On-screen Touch Controls */
+        .controls {
+            margin-top: 15px;
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            grid-template-rows: repeat(3, 70px);
+            gap: 10px;
+            justify-content: center;
+        }
 
-/* GAME WORLD */
-#game{
- overflow:hidden;
- background:linear-gradient(#8bd9ae 0%,#c8f0c0 46%,#6fbd60 100%);
-}
+        .btn {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px #1a1a1a;
+            cursor: pointer;
+            transition: background 0.1s, transform 0.1s;
+        }
 
-/* SUN */
-.sun{
- position:absolute;width:76px;height:76px;border-radius:50%;
- background:#ffe67b;right:24px;top:34px;
- box-shadow:0 0 35px #fff4a0
-}
+        .btn:active {
+            background-color: #555;
+            transform: translateY(4px);
+            box-shadow: 0 0 #1a1a1a;
+        }
 
-/* CLOUDS */
-.cloud{
- position:absolute;width:105px;height:28px;background:#fff;border-radius:30px;
- opacity:.7
-}
-.cloud:before,.cloud:after{
- content:"";position:absolute;background:white;border-radius:50%
-}
-.cloud:before{width:45px;height:45px;left:15px;top:-20px}
-.cloud:after{width:50px;height:50px;right:8px;top:-25px}
-.c1{top:65px;left:12px}.c2{top:135px;right:65px;transform:scale(.7)}
+        /* Grid Button Positions */
+        #btn-up { grid-column: 2; grid-row: 1; }
+        #btn-left { grid-column: 1; grid-row: 2; }
+        #btn-right { grid-column: 3; grid-row: 2; }
+        #btn-down { grid-column: 2; grid-row: 3; }
 
-/* FAR HILLS */
-.hills{
- position:absolute;left:0;right:0;top:180px;height:160px;
- background:
- linear-gradient(135deg,transparent 50%,#78b57a 51%) 0 0/210px 160px,
- linear-gradient(225deg,transparent 50%,#6eaa72 51%) 105px 0/210px 160px;
- opacity:.75
-}
+        .game-over-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
 
-/* TREES */
-.worldTree{position:absolute;font-size:62px;z-index:3}
-.wt1{left:2%;bottom:27%}.wt2{right:3%;bottom:29%}
-.wt3{left:22%;bottom:39%;font-size:45px}.wt4{right:24%;bottom:43%;font-size:48px}
+        .game-over-overlay h1 {
+            color: #ff4757;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
 
-/* GROUND */
-.ground{
- position:absolute;left:0;right:0;bottom:0;height:31%;
- background:linear-gradient(#76c966,#4caa50)
-}
+        .restart-btn {
+            margin-top: 15px;
+            padding: 12px 24px;
+            background-color: #2ed573;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-/* TRAIL - ONE CONTINUOUS ROAD */
-.trail{
- position:absolute;
- z-index:4;
- left:-10%;
- right:-10%;
- bottom:25%;
- height:115px;
- background:#bd8958;
- border-top:8px solid #996841;
- border-bottom:8px solid #996841;
- transform:rotate(-2deg);
- border-radius:55px;
- box-shadow:0 10px 0 #0001;
-}
-
-/* road highlights */
-.roadLine{
- position:absolute;
- z-index:5;
- left:-5%;right:-5%;bottom:31%;
- height:5px;
- background:repeating-linear-gradient(
-  90deg,#ead08a 0 35px,transparent 35px 65px
- );
- transform:rotate(-2deg);
- opacity:.8
-}
-
-/* small stones */
-.stone{
- position:absolute;z-index:6;width:25px;height:13px;
- border-radius:50%;background:#75634c
-}
-
-/* TOP UI */
-.gameTop{
- position:absolute;z-index:30;top:12px;left:10px;right:10px;
- display:flex;justify-content:space-between;align-items:center
-}
-.level,.catchBox{
- background:#fffffff2;border-radius:15px;padding:9px 12px;
- color:#277441;font-weight:bold
-}
-.catchBox{text-align:center;font-size:13px;color:#555}
-.progress{width:85px;height:8px;background:#ddd;border-radius:10px;margin-top:5px}
-.progressFill{height:100%;width:0;background:#f1bb19;border-radius:10px;transition:.3s}
-
-/* TARGET */
-.target{
- position:absolute;z-index:25;top:88px;left:50%;
- transform:translateX(-50%);
- width:88px;height:91px;background:#ffffffe8;border-radius:21px;
- text-align:center;padding:6px;box-shadow:0 5px 14px #0002
-}
-.target small{color:#777}
-.lamp{position:relative;width:65px;height:55px;margin:auto}
-.lampBody{
- position:absolute;left:7px;top:25px;width:51px;height:22px;
- background:#eee;border-radius:8px 8px 25px 25px
-}
-.lampTop{
- position:absolute;left:15px;top:17px;width:35px;height:12px;
- background:#eee;border-radius:50%
-}
-.flame{
- position:absolute;left:26px;top:1px;width:15px;height:24px;
- background:#eee;border-radius:50% 50% 50% 0;transform:rotate(45deg)
-}
-.target.done .lampBody,.target.done .lampTop{background:#8b5a31}
-.target.done .flame{background:#ffd21d}
-
-/* CHARACTER */
-#player{
- position:absolute;z-index:20;
- width:70px;height:110px;
- left:42%;bottom:29%;
- transition:left .12s,bottom .2s;
- transform:scaleX(1);
-}
-
-/* side-facing character */
-.face{
- position:absolute;width:48px;height:48px;left:9px;top:3px;
- background:#ffd0a0;border:3px solid #a56d45;border-radius:48%
-}
-.hair{
- position:absolute;z-index:2;width:48px;height:22px;left:7px;top:-3px;
- background:#543629;border-radius:50% 55% 35% 30%
-}
-.eye{
- position:absolute;width:7px;height:9px;border-radius:50%;
- background:#222;right:8px;top:17px
-}
-.nose{
- position:absolute;right:-5px;top:24px;
- width:9px;height:7px;border-radius:50%;background:#e6a06f
-}
-.smile{
- position:absolute;right:7px;top:30px;width:14px;height:7px;
- border-bottom:2px solid #a94f4f;border-radius:50%
-}
-.body{
- position:absolute;left:15px;top:49px;width:42px;height:43px;
- background:#398fd1;border-radius:15px 12px 11px 11px
-}
-.backpack{
- position:absolute;left:5px;top:53px;width:16px;height:34px;
- background:#e6a52b;border-radius:9px
-}
-.arm{
- position:absolute;top:53px;width:10px;height:36px;
- background:#ffd0a0;border-radius:10px
-}
-.arm1{right:2px;transform:rotate(-18deg)}
-.arm2{left:8px;transform:rotate(20deg)}
-.leg{
- position:absolute;top:86px;width:13px;height:31px;
- background:#394c76;border-radius:10px
-}
-.leg1{right:16px}.leg2{left:19px}
-
-/* walking animation */
-.walk .leg1{animation:walk1 .28s infinite alternate}
-.walk .leg2{animation:walk2 .28s infinite alternate}
-.walk .arm1{animation:arm1 .28s infinite alternate}
-.walk .arm2{animation:arm2 .28s infinite alternate}
-
-@keyframes walk1{to{transform:rotate(25deg)}}
-@keyframes walk2{to{transform:rotate(-25deg)}}
-@keyframes arm1{to{transform:rotate(20deg)}}
-@keyframes arm2{to{transform:rotate(-15deg)}}
-
-/* BALLOONS */
-.balloon{
- position:absolute;z-index:18;
- width:43px;height:54px;
- border-radius:50% 50% 47% 47%;
- box-shadow:inset -8px -9px 12px #0002,inset 8px 7px 12px #fff7;
-}
-.balloon:before{
- content:"";position:absolute;bottom:-5px;left:18px;
- width:8px;height:8px;background:inherit;transform:rotate(45deg)
-}
-.string{
- position:absolute;left:21px;top:51px;width:1px;height:100px;
- background:#666
-}
-.shine{
- position:absolute;left:9px;top:9px;width:9px;height:16px;
- border-radius:50%;background:#fff9
-}
-.yellow{background:#ffd522}.brown{background:#8a5a32}
-.red{background:#ed5555}.blue{background:#4b9fe5}
-.pink{background:#e56eae}.green{background:#55ba68}
-.purple{background:#9568dc}
-
-/* floating balloon animation */
-.float{
- animation:balloonFloat .8s ease-in-out infinite alternate
-}
-@keyframes balloonFloat{
- from{margin-left:-2px}
- to{margin-left:3px}
-}
-
-/* CONTROLS */
-.controls{
- position:absolute;z-index:50;left:0;right:0;bottom:92px;
- padding:0 14px;display:flex;justify-content:space-between;
- pointer-events:none
-}
-.group{display:flex;gap:10px;pointer-events:auto}
-.control{
- width:62px;height:62px;border-radius:20px;
- background:#fffffff2;color:#267443;font-size:24px;
- box-shadow:0 5px 13px #0003
-}
-.catch{
- width:75px;background:#ffd348;color:#684b00;font-size:16px
-}
-.control:active{transform:scale(.87)}
-
-.message{
- position:absolute;z-index:90;top:48%;left:50%;
- transform:translate(-50%,-50%);
- display:none;background:#fffffff5;padding:17px 24px;
- border-radius:20px;color:#287a43;font-size:18px;font-weight:bold;
- box-shadow:0 8px 20px #0003;white-space:nowrap
-}
-
-@media(max-height:650px){
- .controls{bottom:76px}
- .control{width:55px;height:55px}
- .catch{width:68px}
- .target{top:75px}
-}
-</style>
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
-
 <body>
 
-<section id="splash">
- <div class="logo">Color<span>Hop</span></div>
- <p>Catch colors. Complete the picture.</p>
-</section>
-
-<section id="home" class="screen">
- <div class="sun"></div>
- <div class="cloud c1"></div>
- <div class="cloud c2"></div>
-
- <div class="home">
-  <div class="title">Color<span>Hop</span></div>
-  <div class="menu">
-   <button onclick="startGame()">▶ Play</button>
-   <button onclick="info('Profile','Your adventure profile will appear here.')">👤 Profile</button>
-   <button onclick="info('Settings','Game settings will be added here.')">⚙ Settings</button>
-   <button onclick="info('How to Play','Move left and right, jump when needed and catch only the required colors.')">❓ How to Play</button>
-   <button onclick="info('Language','Multiple working languages will be added.')">🌐 Language</button>
-  </div>
- </div>
-
- <div class="tree tree1">🌳</div>
- <div class="tree tree2">🌳</div>
-</section>
-
-<section id="info" class="screen">
- <div class="infoBox">
-  <h2 id="infoTitle"></h2>
-  <p id="infoText"></p>
-  <button class="back" onclick="home()">← Back</button>
- </div>
-</section>
-
-<section id="game" class="screen">
-
- <div class="sun"></div>
- <div class="cloud c1"></div>
- <div class="cloud c2"></div>
- <div class="hills"></div>
-
- <div class="worldTree wt1">🌳</div>
- <div class="worldTree wt2">🌳</div>
- <div class="worldTree wt3">🌲</div>
- <div class="worldTree wt4">🌲</div>
-
- <div class="ground"></div>
-
- <div class="trail"></div>
- <div class="roadLine"></div>
-
- <div class="stone" style="left:14%;bottom:30%"></div>
- <div class="stone" style="left:29%;bottom:34%"></div>
- <div class="stone" style="right:21%;bottom:29%"></div>
- <div class="stone" style="right:7%;bottom:34%"></div>
-
- <div class="gameTop">
-  <div class="level">LEVEL <span id="level">1</span></div>
-
-  <div class="catchBox">
-   Catch: <b>🟡 + 🟤</b>
-   <div class="progress">
-    <div class="progressFill" id="progress"></div>
-   </div>
-  </div>
- </div>
-
- <div class="target" id="target">
-  <small>Complete</small>
-  <div class="lamp">
-   <div class="flame"></div>
-   <div class="lampTop"></div>
-   <div class="lampBody"></div>
-  </div>
- </div>
-
- <div id="player" class="walk">
-  <div class="hair"></div>
-  <div class="face">
-   <div class="eye"></div>
-   <div class="nose"></div>
-   <div class="smile"></div>
-  </div>
-  <div class="backpack"></div>
-  <div class="body"></div>
-  <div class="arm arm1"></div>
-  <div class="arm arm2"></div>
-  <div class="leg leg1"></div>
-  <div class="leg leg2"></div>
- </div>
-
- <div class="controls">
-  <div class="group">
-   <button class="control" onclick="move(-1)">◀</button>
-   <button class="control" onclick="move(1)">▶</button>
-  </div>
-  <div class="group">
-   <button class="control" onclick="jump()">⬆</button>
-   <button class="control catch" onclick="catchBalloon()">CATCH</button>
-  </div>
- </div>
-
- <div class="message" id="message"></div>
-</section>
-
-<script>
-let level=1;
-let px=42;
-let bottom=29;
-let jumping=false;
-let balloons=[];
-let collected={yellow:false,brown:false};
-let spawnInterval;
-let running=false;
-
-const colors=["yellow","brown","red","blue","pink","green","purple"];
-
-setTimeout(()=>{
- document.getElementById("splash").style.display="none";
- document.getElementById("home").classList.add("active");
-},5000);
-
-function startGame(){
- document.getElementById("home").classList.remove("active");
- document.getElementById("info").classList.remove("active");
- document.getElementById("game").classList.add("active");
- running=true;
- level=1;
- setup();
-}
-
-function home(){
- running=false;
- clearInterval(spawnInterval);
- clearBalloons();
- document.getElementById("game").classList.remove("active");
- document.getElementById("info").classList.remove("active");
- document.getElementById("home").classList.add("active");
-}
-
-function info(t,x){
- document.getElementById("home").classList.remove("active");
- document.getElementById("info").classList.add("active");
- document.getElementById("infoTitle").innerText=t;
- document.getElementById("infoText").innerText=x;
-}
-
-function setup(){
- clearBalloons();
- collected={yellow:false,brown:false};
- px=42;
- bottom=29;
- updatePlayer();
-
- document.getElementById("level").innerText=level;
- document.getElementById("progress").style.width="0%";
- document.getElementById("target").classList.remove("done");
-
- spawnBalloon();
-
- clearInterval(spawnInterval);
-
- let time=Math.max(1150,2100-level*40);
-
- spawnInterval=setInterval(()=>{
-  if(running) spawnBalloon();
- },time);
-}
-
-/* BALLOONS START AT THE BOTTOM AND FLY UP */
-function spawnBalloon(){
-
- if(balloons.length>=4)return;
-
- let b=document.createElement("div");
- b.className="balloon float";
-
- let r=Math.random();
- let color;
-
- if(r<.28 && !collected.yellow) color="yellow";
- else if(r<.56 && !collected.brown) color="brown";
- else color=colors[Math.floor(Math.random()*colors.length)];
-
- b.classList.add(color);
-
- let shine=document.createElement("div");
- shine.className="shine";
-
- let string=document.createElement("div");
- string.className="string";
-
- b.appendChild(shine);
- b.appendChild(string);
-
- /*
-  IMPORTANT:
-  Balloon now starts from bottom 22%-27%.
-  It then continuously rises.
- */
- let x=8+Math.random()*84;
- let y=24+Math.random()*5;
-
- b.style.left=x+"%";
- b.style.bottom=y+"%";
-
- document.getElementById("game").appendChild(b);
-
- balloons.push({
-  el:b,
-  x:x,
-  y:y,
-  speed:.11+level*.012,
-  color:color
- });
-}
-
-/* CONTINUOUS UPWARD MOVEMENT */
-function animate(){
- if(running){
-
-  for(let i=balloons.length-1;i>=0;i--){
-
-   let b=balloons[i];
-
-   b.y+=b.speed;
-   b.el.style.bottom=b.y+"%";
-
-   /* tiny side movement */
-   b.x+=Math.sin(Date.now()/500+i)*.008;
-   b.el.style.left=b.x+"%";
-
-   /* remove after reaching sky */
-   if(b.y>105){
-    b.el.remove();
-    balloons.splice(i,1);
-   }
-  }
- }
-
- requestAnimationFrame(animate);
-}
-animate();
-
-function updatePlayer(){
- let p=document.getElementById("player");
- p.style.left=px+"%";
- p.style.bottom=bottom+"%";
-}
-
-function move(direction){
-
- if(!running)return;
-
- px+=direction*7;
-
- if(px<4)px=4;
- if(px>91)px=91;
-
- updatePlayer();
-}
-
-function jump(){
-
- if(jumping || !running)return;
-
- jumping=true;
- bottom+=17;
- updatePlayer();
-
- setTimeout(()=>{
-  bottom-=17;
-  updatePlayer();
-  jumping=false;
- },600);
-}
-
-function catchBalloon(){
-
- if(!running)return;
-
- let player=document.getElementById("player");
- let pr=player.getBoundingClientRect();
-
- let closest=null;
- let distance=999;
-
- balloons.forEach(b=>{
-
-  let r=b.el.getBoundingClientRect();
-
-  let bx=r.left+r.width/2;
-  let by=r.top+r.height/2;
-
-  let px2=pr.left+pr.width/2;
-  let py2=pr.top+pr.height/2;
-
-  let d=Math.hypot(bx-px2,by-py2);
-
-  if(d<distance){
-   distance=d;
-   closest=b;
-  }
- });
-
- if(closest && distance<125){
-
-  if(closest.color==="yellow" || closest.color==="brown"){
-   correct(closest);
-  }else{
-   wrong(closest);
-  }
-
- }else{
-  message("🎈 पास जाकर CATCH दबाएँ");
- }
-}
-
-function correct(b){
-
- let c=b.color;
-
- if(collected[c]){
-  removeBalloon(b);
-  return;
- }
-
- collected[c]=true;
- removeBalloon(b);
-
- let n=0;
- if(collected.yellow)n++;
- if(collected.brown)n++;
-
- document.getElementById("progress").style.width=(n*50)+"%";
-
- if(n===2){
-
-  document.getElementById("target").classList.add("done");
-
-  message("✨ Picture Complete!");
-
-  clearInterval(spawnInterval);
-
-  setTimeout(()=>{
-   level++;
-   if(level>20){
-    message("🏆 20 Levels Complete!");
-    level=1;
-    setTimeout(setup,1800);
-   }else{
-    setup();
-   }
-  },1300);
-
- }else{
-  message("✅ सही रंग!");
- }
-}
-
-function wrong(b){
- removeBalloon(b);
- message("❌ गलत रंग!");
-}
-
-function removeBalloon(b){
- if(b.el)b.el.remove();
- balloons=balloons.filter(x=>x!==b);
-}
-
-function clearBalloons(){
- balloons.forEach(b=>{
-  if(b.el)b.el.remove();
- });
- balloons=[];
-}
-
-let msgTimer;
-
-function message(t){
- let m=document.getElementById("message");
- m.innerText=t;
- m.style.display="block";
-
- clearTimeout(msgTimer);
-
- msgTimer=setTimeout(()=>{
-  m.style.display="none";
- },900);
-}
-</script>
-
+    <div class="game-container">
+        <div class="header">
+            <div>Score: <span id="score">0</span></div>
+            <div>High: <span id="high-score">0</span></div>
+        </div>
+
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+        <!-- Touch Screen Arrows -->
+        <div class="controls">
+            <button class="btn" id="btn-up">▲</button>
+            <button class="btn" id="btn-left">◀</button>
+            <button class="btn" id="btn-right">▶</button>
+            <button class="btn" id="btn-down">▼</button>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="game-over-screen" class="game-over-overlay hidden">
+        <h1>GAME OVER</h1>
+        <p>Final Score: <span id="final-score">0</span></p>
+        <button class="restart-btn" onclick="resetGame()">Play Again</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        const scoreEl = document.getElementById("score");
+        const highScoreEl = document.getElementById("high-score");
+        const finalScoreEl = document.getElementById("final-score");
+        const gameOverScreen = document.getElementById("game-over-screen");
+
+        // Grid Settings
+        const gridSize = 20; // 20x20 pixels per tile
+        const tileCount = canvas.width / gridSize;
+
+        // Game Variables
+        let snake = [];
+        let food = { x: 0, y: 0 };
+        let dx = gridSize; // Initial velocity (moving right)
+        let dy = 0;
+        let score = 0;
+        let highScore = localStorage.getItem("snakeHighScore") || 0;
+        let gameLoop;
+        let isChangingDirection = false; // Prevents fast double-tap self-collision
+
+        highScoreEl.innerText = highScore;
+
+        function startGame() {
+            snake = [
+                { x: 160, y: 200 },
+                { x: 140, y: 200 },
+                { x: 120, y: 200 }
+            ];
+            score = 0;
+            dx = gridSize;
+            dy = 0;
+            scoreEl.innerText = score;
+            gameOverScreen.classList.add("hidden");
+            spawnFood();
+            
+            if (gameLoop) clearInterval(gameLoop);
+            gameLoop = setInterval(draw, 100); // Game speed (100ms)
+        }
+
+        function spawnFood() {
+            food.x = Math.floor(Math.random() * tileCount) * gridSize;
+            food.y = Math.floor(Math.random() * tileCount) * gridSize;
+
+            // Ensure food doesn't spawn on top of snake body
+            snake.forEach(part => {
+                if (part.x === food.x && part.y === food.y) {
+                    spawnFood();
+                }
+            });
+        }
+
+        function draw() {
+            moveSnake();
+
+            if (checkGameOver()) {
+                handleGameOver();
+                return;
+            }
+
+            isChangingDirection = false;
+
+            // Clear Screen
+            ctx.fillStyle = "#000000";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Food
+            ctx.fillStyle = "#ff4757";
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = "#ff4757";
+            ctx.fillRect(food.x, food.y, gridSize - 2, gridSize - 2);
+
+            // Draw Snake
+            ctx.shadowBlur = 0; // Turn off glow for body performance
+            snake.forEach((part, index) => {
+                // Head is brighter green
+                ctx.fillStyle = index === 0 ? "#2ed573" : "#26af5f";
+                ctx.fillRect(part.x, part.y, gridSize - 2, gridSize - 2);
+            });
+        }
+
+        function moveSnake() {
+            const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            snake.unshift(head);
+
+            // Check if snake ate food
+            if (head.x === food.x && head.y === food.y) {
+                score += 10;
+                scoreEl.innerText = score;
+                if (score > highScore) {
+                    highScore = score;
+                    highScoreEl.innerText = highScore;
+                    localStorage.setItem("snakeHighScore", highScore);
+                }
+                spawnFood();
+            } else {
+                snake.pop(); // Remove tail if no food eaten
+            }
+        }
+
+        function checkGameOver() {
+            const head = snake[0];
+
+            // Wall collisions
+            const hitLeft = head.x < 0;
+            const hitRight = head.x >= canvas.width;
+            const hitTop = head.y < 0;
+            const hitBottom = head.y >= canvas.height;
+
+            if (hitLeft || hitRight || hitTop || hitBottom) return true;
+
+            // Self collision
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) return true;
+            }
+
+            return false;
+        }
+
+        function handleGameOver() {
+            clearInterval(gameLoop);
+            finalScoreEl.innerText = score;
+            gameOverScreen.classList.remove("hidden");
+        }
+
+        function changeDirection(direction) {
+            if (isChangingDirection) return;
+
+            const goingUp = dy === -gridSize;
+            const goingDown = dy === gridSize;
+            const goingRight = dx === gridSize;
+            const goingLeft = dx === -gridSize;
+
+            if (direction === 'LEFT' && !goingRight) {
+                dx = -gridSize; dy = 0;
+                isChangingDirection = true;
+            }
+            if (direction === 'UP' && !goingDown) {
+                dx = 0; dy = -gridSize;
+                isChangingDirection = true;
+            }
+            if (direction === 'RIGHT' && !goingLeft) {
+                dx = gridSize; dy = 0;
+                isChangingDirection = true;
+            }
+            if (direction === 'DOWN' && !goingUp) {
+                dx = 0; dy = gridSize;
+                isChangingDirection = true;
+            }
+        }
+
+        function resetGame() {
+            startGame();
+        }
+
+        // Keyboard Controls
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft" || e.key === "a") changeDirection('LEFT');
+            if (e.key === "ArrowUp" || e.key === "w") changeDirection('UP');
+            if (e.key === "ArrowRight" || e.key === "d") changeDirection('RIGHT');
+            if (e.key === "ArrowDown" || e.key === "s") changeDirection('DOWN');
+        });
+
+        // Touch Control Listeners (Supports touchstart for rapid responsiveness)
+        const bindTouch = (id, direction) => {
+            const btn = document.getElementById(id);
+            const handlePress = (e) => {
+                e.preventDefault(); // Prevents touch lag/emulated click
+                changeDirection(direction);
+            };
+            btn.addEventListener("touchstart", handlePress, { passive: false });
+            btn.addEventListener("mousedown", handlePress);
+        };
+
+        bindTouch("btn-up", 'UP');
+        bindTouch("btn-left", 'LEFT');
+        bindTouch("btn-right", 'RIGHT');
+        bindTouch("btn-down", 'DOWN');
+
+        // Start game on load
+        startGame();
+    </script>
 </body>
-      </html>
+     </html>
